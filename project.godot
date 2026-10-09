@@ -14,6 +14,10 @@ config/name="endless_Ocean"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+HighLevelNetworkHandler="*uid://d3nxdpo1dpe5i"
+
 [display]
 
 window/stretch/mode="canvas_items"
