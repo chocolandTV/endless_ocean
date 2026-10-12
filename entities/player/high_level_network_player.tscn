@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cfdulo2bbqiwh"]
 
 [ext_resource type="Script" uid="uid://bvmtekk4gsh27" path="res://entities/player/player_controller.gd" id="1_fc1wh"]
-[ext_resource type="Texture2D" uid="uid://dyayimc241ba8" path="res://icon.svg" id="1_ksu0g"]
+[ext_resource type="Texture2D" uid="uid://itoa8y7fdl3a" path="res://assets/textures/fish_base.png" id="2_fc1wh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_477m3"]
 size = Vector2(111, 113)
@@ -12,10 +12,11 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="HighLevelNetworkPlayer" type="CharacterBody2D" unique_id=480530951]
+motion_mode = 1
 script = ExtResource("1_fc1wh")
 
 [node name="Icon" type="Sprite2D" parent="." unique_id=2037938210]
-texture = ExtResource("1_ksu0g")
+texture = ExtResource("2_fc1wh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=805070778]
 position = Vector2(0.5, -0.5)

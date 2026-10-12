@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://n0ungvugdktn"]
+
+[ext_resource type="Script" uid="uid://bgo3wakuqi6r8" path="res://entities/network/client.gd" id="1_yhoek"]
+[ext_resource type="Script" uid="uid://dahur7bdosys" path="res://entities/network/multiplayer_spawner.gd" id="2_hng8e"]
+[ext_resource type="PackedScene" uid="uid://cfdulo2bbqiwh" path="res://entities/player/high_level_network_player.tscn" id="3_v3ttv"]
+
+[node name="Client" type="Node2D" unique_id=1270985966]
+script = ExtResource("1_yhoek")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1049845846]
+_spawnable_scenes = PackedStringArray("uid://cfdulo2bbqiwh")
+spawn_path = NodePath("..")
+script = ExtResource("2_hng8e")
+network_player_scene = ExtResource("3_v3ttv")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=131536195]
+offset_left = -1024.0
+offset_top = -1024.0
+offset_right = 1476.0
+offset_bottom = 1196.0
+color = Color(0.19215687, 0.36862746, 0.4, 1)

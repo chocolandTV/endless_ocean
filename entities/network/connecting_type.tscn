@@ -3,45 +3,27 @@
 [ext_resource type="Script" uid="uid://btpegusc5ywv7" path="res://entities/network/connecting_type.gd" id="1_w47qd"]
 [ext_resource type="Script" uid="uid://dahur7bdosys" path="res://entities/network/multiplayer_spawner.gd" id="2_1av7l"]
 [ext_resource type="PackedScene" uid="uid://cfdulo2bbqiwh" path="res://entities/player/high_level_network_player.tscn" id="3_en6w8"]
+[ext_resource type="Script" uid="uid://b1w1o05nx5u52" path="res://entities/network/server.gd" id="5_xprn8"]
 
-[node name="Connecting_Type" type="Node2D" unique_id=197527319]
+[node name="Game_Scene" type="Node2D" unique_id=197527319]
 script = ExtResource("1_w47qd")
 
-[node name="High_Level_UI" type="Control" parent="." unique_id=1757400680]
-custom_minimum_size = Vector2(1152, 648)
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 1152.0
-offset_bottom = 648.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="isServer" type="Node" parent="." unique_id=2072718554]
+script = ExtResource("5_xprn8")
+is_Server = false
 
-[node name="MarginContainer" type="MarginContainer" parent="High_Level_UI" unique_id=2142054729]
-layout_mode = 1
-offset_right = 120.0
-offset_bottom = 66.0
-
-[node name="PanelContainer" type="PanelContainer" parent="High_Level_UI/MarginContainer" unique_id=1821237161]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="High_Level_UI/MarginContainer/PanelContainer" unique_id=699797776]
-layout_mode = 2
-
-[node name="Button_Client" type="Button" parent="High_Level_UI/MarginContainer/PanelContainer/VBoxContainer" unique_id=1232580334]
-layout_mode = 2
-text = " Play as Client"
-
-[node name="Button_Server" type="Button" parent="High_Level_UI/MarginContainer/PanelContainer/VBoxContainer" unique_id=1875658362]
-layout_mode = 2
-text = " Play as Server"
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1776486304]
+offset_left = -1024.0
+offset_top = -1024.0
+offset_right = 1476.0
+offset_bottom = 1476.0
+color = Color(0.19215687, 0.36862746, 0.4, 1)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=244073272]
 _spawnable_scenes = PackedStringArray("uid://cfdulo2bbqiwh")
-spawn_path = NodePath("..")
+spawn_path = NodePath("../Start_Position")
 script = ExtResource("2_1av7l")
 network_player_scene = ExtResource("3_en6w8")
 
-[connection signal="pressed" from="High_Level_UI/MarginContainer/PanelContainer/VBoxContainer/Button_Client" to="." method="_on_button_client_pressed"]
-[connection signal="pressed" from="High_Level_UI/MarginContainer/PanelContainer/VBoxContainer/Button_Server" to="." method="_on_button_server_pressed"]
+[node name="Start_Position" type="Node2D" parent="." unique_id=833803025]
+position = Vector2(93, 70)
