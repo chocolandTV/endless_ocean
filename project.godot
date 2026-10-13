@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="endless_Ocean"
-run/main_scene="uid://b6211xtv2x4pj"
+run/main_scene="uid://dremq4jppgscf"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
 
-HighLevelNetworkHandler="*uid://d3nxdpo1dpe5i"
+Network="*uid://ccg16ovpwby2d"
 
 [display]
 
@@ -31,4 +31,4 @@ window/stretch/aspect="expand"
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"

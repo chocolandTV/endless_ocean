@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://dremq4jppgscf"]
+
+[ext_resource type="Script" uid="uid://dog1i5tt4e8wg" path="res://scripts/test_web_socket.gd" id="1_vooo2"]
+
+[node name="Test_WebSocket" type="Node2D" unique_id=1318297918]
+script = ExtResource("1_vooo2")
+is_server = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=608729439]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=711566596]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1962183047]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control" unique_id=2036555741]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Client_Button" type="Button" parent="CanvasLayer/Control/VBoxContainer" unique_id=1453972164]
+layout_mode = 2
+text = "CLIENT
+"
+
+[node name="Server_Button" type="Button" parent="CanvasLayer/Control/VBoxContainer" unique_id=1536602023]
+layout_mode = 2
+text = "SERVER"
+
+[node name="Angel_Button" type="Button" parent="CanvasLayer/Control/VBoxContainer" unique_id=192700908]
+layout_mode = 2
+text = "ANGELN"
+
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/Client_Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/Server_Button" to="." method="_on_server_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/Angel_Button" to="." method="_on_angel_button_pressed"]

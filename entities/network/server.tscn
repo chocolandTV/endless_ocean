@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://beobns6qgywba"]
-
-[ext_resource type="Script" uid="uid://b1w1o05nx5u52" path="res://entities/network/server.gd" id="1_cnnfb"]
-
-[node name="Server" type="Node2D" unique_id=137822941]
-script = ExtResource("1_cnnfb")
