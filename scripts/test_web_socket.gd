@@ -20,7 +20,7 @@ func _on_server_button_pressed() -> void:
 
 
 func _on_button_pressed() -> void:
-	var result:= Network.connect_to_server(SERVER_IP)
+	var result:= Network.connect_to_server(SERVER_LOCALHOST)
 	if result == OK:
 		print("connection successed")
 		if is_server:

@@ -11,13 +11,17 @@ var player_node : CharacterBody2D
 var local_fish : Array[Dictionary]  =[]
 var pulse_time: float = 0.0
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	if player_node == null:
-		push_error("Sonar_Radar requires a player_node.")
-		return
+func _enter_tree() -> void:
+	add_to_group("sonar_radar")
 
-	_generate_test_fish()
+func _ready() -> void:
+	if player_node != null:
+		_generate_test_fish()
+
+func set_player_node(player: CharacterBody2D) -> void:
+	player_node = player
+	if is_node_ready():
+		_generate_test_fish()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

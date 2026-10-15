@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://co3bu6mqsejv4"]
+
+[ext_resource type="Script" uid="uid://ipug2f6suusq" path="res://scripts/game_settings.gd" id="1_4spmm"]
+
+[node name="Game_Settings" type="Node" unique_id=939273615]
+script = ExtResource("1_4spmm")

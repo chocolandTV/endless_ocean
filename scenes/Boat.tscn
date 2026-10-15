@@ -2,16 +2,67 @@
 
 [ext_resource type="Script" uid="uid://bk81cst8g5rxr" path="res://scripts/boat.gd" id="1_mlulb"]
 [ext_resource type="Texture2D" uid="uid://ceuvemxqgvjtl" path="res://assets/textures/boat_base.png" id="2_4pna2"]
+[ext_resource type="Script" uid="uid://bifpfu6oob7j1" path="res://scripts/name_tag.gd" id="3_nai5d"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_477m3"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nai5d"]
+size = Vector2(50, 129)
 
-[node name="Boat" type="CharacterBody2D" unique_id=985400639 node_paths=PackedStringArray("fishing_ui")]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_477m3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4pna2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nai5d"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x0g7w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wdn3g"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mlulb"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("Sprite2D:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Name_Tag:text")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[node name="Boat" type="CharacterBody2D" unique_id=985400639]
+collision_layer = 0
+collision_mask = 0
+motion_mode = 1
 script = ExtResource("1_mlulb")
-fishing_ui = NodePath("")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1722146459]
-shape = SubResource("CircleShape2D_477m3")
+position = Vector2(-1, 1.5)
+shape = SubResource("RectangleShape2D_nai5d")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1390065232]
 scale = Vector2(0.27, 0.27)
 texture = ExtResource("2_4pna2")
+
+[node name="Name_Tag" type="Label" parent="." unique_id=1616842433 node_paths=PackedStringArray("button")]
+offset_left = -87.0
+offset_top = -98.0
+offset_right = 86.0
+offset_bottom = -75.0
+theme_override_colors/font_color = Color(0.92941177, 0.52156866, 0.44705883, 1)
+text = "Betty"
+horizontal_alignment = 1
+script = ExtResource("3_nai5d")
+button = NodePath("../Button")
+
+[node name="Button" type="Button" parent="." unique_id=768492110]
+offset_left = -26.0
+offset_top = -98.0
+offset_right = 24.0
+offset_bottom = -73.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_477m3")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_4pna2")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_nai5d")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_x0g7w")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wdn3g")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1312121142]
+replication_config = SubResource("SceneReplicationConfig_mlulb")

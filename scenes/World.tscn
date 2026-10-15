@@ -6,7 +6,7 @@
 
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=39647778]
 repeat_size = Vector2(1024, 1024)
-repeat_times = 2
+repeat_times = 6
 
 [node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=1652381789]
 texture = ExtResource("1_kqs1s")
