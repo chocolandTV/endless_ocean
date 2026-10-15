@@ -1,3 +1,12 @@
 [gd_scene format=3 uid="uid://cmbf36ngsnqqg"]
 
+[ext_resource type="Texture2D" uid="uid://cn3754kqfxsb2" path="res://assets/textures/background_ocean.png" id="1_kqs1s"]
+
 [node name="World" type="Node2D" unique_id=1165066505]
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=39647778]
+repeat_size = Vector2(1024, 1024)
+repeat_times = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=1652381789]
+texture = ExtResource("1_kqs1s")

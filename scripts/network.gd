@@ -4,8 +4,8 @@ extends Node
 signal connection_changed(_connected : bool)
 signal game_state_updated(state:  Dictionary)
 signal fishing_result_received(_success : bool, amount : int)
-signal fishing_session_started(_session_id: int, phase : float)
-signal fishing_session_ended(_success : bool, message: String)
+signal fishing_session_started_received(_session_id: int, phase : float)
+signal fishing_session_ended_received(_success : bool, message: String)
 
 
 # consts
@@ -331,11 +331,11 @@ func _send_session_message(sender_id,success : bool, message : String) ->void:
 
 @rpc("authority","call_remote","reliable")
 func on_fishing_session_started(session_id : int, phase : float)->void:
-    fishing_session_started.emit(session_id, phase)
+    fishing_session_started_received.emit(session_id, phase)
 
 @rpc("authority","call_remote", "reliable")
 func on_fishing_session_ended(success : bool, message: String) ->void:
-    fishing_session_ended.emit(success, message)
+    fishing_session_ended_received.emit(success, message)
 
 @rpc("authority","call_remote", "reliable")
 func on_fishing_result(success : bool, amount : int) ->void:

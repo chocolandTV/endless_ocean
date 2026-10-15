@@ -15,8 +15,11 @@ script = ExtResource("1_7ucl3")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=872638049]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
@@ -36,6 +39,7 @@ horizontal_alignment = 1
 
 [node name="Balance_Hslider" type="HSlider" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=816792032]
 layout_mode = 2
+editable = true
 tooltip_text = "Try to keep the balance to the green marker"
 
 [node name="Tension_Bar" type="ProgressBar" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=944258456]
@@ -65,4 +69,5 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_477m3")
 
 [node name="Button" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1938713718]
 layout_mode = 2
+disabled = true
 text = "Reel in"

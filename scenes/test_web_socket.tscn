@@ -2,22 +2,22 @@
 
 [ext_resource type="Script" uid="uid://dog1i5tt4e8wg" path="res://scripts/test_web_socket.gd" id="1_vooo2"]
 [ext_resource type="PackedScene" uid="uid://dqimx00yygemn" path="res://ui/sonar_radar.tscn" id="2_0uih2"]
+[ext_resource type="Script" uid="uid://cld8ckyjohu48" path="res://scripts/multiplayer_spawner.gd" id="3_0uih2"]
 [ext_resource type="PackedScene" uid="uid://bkko5ec3shhnb" path="res://ui/fishing_ui.tscn" id="3_3avjl"]
+[ext_resource type="PackedScene" uid="uid://cmbf36ngsnqqg" path="res://scenes/World.tscn" id="4_3avjl"]
+[ext_resource type="PackedScene" uid="uid://dhynxf3ksl2pf" path="res://scenes/Boat.tscn" id="5_ihscc"]
 
 [node name="Test_WebSocket" type="Node2D" unique_id=1318297918]
 script = ExtResource("1_vooo2")
 is_server = false
+
+[node name="World" parent="." unique_id=1165066505 instance=ExtResource("4_3avjl")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=608729439]
 
 [node name="Control" type="Control" parent="CanvasLayer" unique_id=711566596]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1962183047]
-layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -36,28 +36,41 @@ layout_mode = 2
 text = "SERVER"
 
 [node name="Angel_Button" type="Button" parent="CanvasLayer/Control/VBoxContainer" unique_id=192700908]
+visible = false
 layout_mode = 2
 text = "ANGELN"
 
 [node name="Sonar_Radar" parent="CanvasLayer" unique_id=567801495 instance=ExtResource("2_0uih2")]
+unique_name_in_owner = true
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
-offset_left = -229.0
-offset_top = -231.0
-offset_right = -29.0
-offset_bottom = -31.0
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 0.0
+offset_bottom = 0.0
 grow_horizontal = 0
 grow_vertical = 0
 
 [node name="Fishing_UI" parent="CanvasLayer" unique_id=796542222 instance=ExtResource("3_3avjl")]
-visible = false
-modulate = Color(0.4, 0.22352941, 0.19215687, 1)
-anchors_preset = 0
-anchor_right = 0.0
+custom_minimum_size = Vector2(320, 220)
+anchors_preset = 1
+anchor_left = 1.0
 anchor_bottom = 0.0
-grow_horizontal = 1
+grow_horizontal = 0
 grow_vertical = 1
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=870538955 node_paths=PackedStringArray("vbox")]
+_spawnable_scenes = PackedStringArray("uid://dhynxf3ksl2pf")
+spawn_path = NodePath("..")
+spawn_limit = 140
+script = ExtResource("3_0uih2")
+player_network_scene = ExtResource("5_ihscc")
+vbox = NodePath("../CanvasLayer/Control/VBoxContainer")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1423944881]
+position_smoothing_enabled = true
+position_smoothing_speed = 8.005
 
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/Client_Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/Server_Button" to="." method="_on_server_button_pressed"]

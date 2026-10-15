@@ -1,3 +1,17 @@
 [gd_scene format=3 uid="uid://dhynxf3ksl2pf"]
 
-[node name="Boat" type="Node2D" unique_id=2075884913]
+[ext_resource type="Script" uid="uid://bk81cst8g5rxr" path="res://scripts/boat.gd" id="1_mlulb"]
+[ext_resource type="Texture2D" uid="uid://ceuvemxqgvjtl" path="res://assets/textures/boat_base.png" id="2_4pna2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_477m3"]
+
+[node name="Boat" type="CharacterBody2D" unique_id=985400639 node_paths=PackedStringArray("fishing_ui")]
+script = ExtResource("1_mlulb")
+fishing_ui = NodePath("")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1722146459]
+shape = SubResource("CircleShape2D_477m3")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1390065232]
+scale = Vector2(0.27, 0.27)
+texture = ExtResource("2_4pna2")
