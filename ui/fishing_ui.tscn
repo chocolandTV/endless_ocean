@@ -2,8 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cikdhgw3qnuet" path="res://scripts/fishing_ui.gd" id="1_7ucl3"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_477m3"]
-
 [node name="Fishing_UI" type="Control" unique_id=796542222]
 layout_mode = 3
 anchors_preset = 15
@@ -15,7 +13,6 @@ script = ExtResource("1_7ucl3")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=872638049]
 layout_mode = 0
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -37,11 +34,6 @@ layout_mode = 2
 text = "Target:  Amena Koi"
 horizontal_alignment = 1
 
-[node name="Balance_Hslider" type="HSlider" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=816792032]
-layout_mode = 2
-editable = true
-tooltip_text = "Try to keep the balance to the green marker"
-
 [node name="Tension_Bar" type="ProgressBar" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=944258456]
 custom_minimum_size = Vector2(300, 25)
 layout_mode = 2
@@ -62,12 +54,10 @@ layout_mode = 2
 text = "Status: Fish near 10 meters"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1634074711]
+[node name="Target_TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=184772749]
 layout_mode = 2
-theme_override_constants/separation = 30
-theme_override_styles/separator = SubResource("StyleBoxEmpty_477m3")
 
-[node name="Button" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1938713718]
-layout_mode = 2
-disabled = true
-text = "Reel in"
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/VBoxContainer/Target_TextureRect" unique_id=1893980224]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://by55bdyf5h6ub"]
+
+[ext_resource type="Script" uid="uid://wmhyiptksbsq" path="res://scripts/mini_game.gd" id="1_3kuml"]
+[ext_resource type="Texture2D" uid="uid://c7qnp5m081fhe" path="res://assets/textures/ocean_side_view.jpg" id="1_gn4em"]
+[ext_resource type="Texture2D" uid="uid://itoa8y7fdl3a" path="res://assets/textures/fish_base.png" id="2_lmkgc"]
+[ext_resource type="Texture2D" uid="uid://qtsx340mvm54" path="res://assets/textures/fishing_net_base.png" id="3_0gcsj"]
+[ext_resource type="Texture2D" uid="uid://b26vfntdt6but" path="res://assets/textures/fishing_net_catch.png" id="4_0gcsj"]
+
+[node name="Minigame" type="Control" unique_id=569718428]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_3kuml")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=190824904]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1278200826]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Ocean" type="TextureRect" parent="PanelContainer/MarginContainer" unique_id=1267959281]
+layout_mode = 2
+texture = ExtResource("1_gn4em")
+
+[node name="Fisch" type="TextureRect" parent="PanelContainer/MarginContainer/Ocean" unique_id=1065648654]
+layout_mode = 0
+offset_left = 369.0
+offset_top = 452.0
+offset_right = 433.0
+offset_bottom = 516.0
+scale = Vector2(4.75, 4.75)
+texture = ExtResource("2_lmkgc")
+
+[node name="Fishing_Mechanic" type="PanelContainer" parent="PanelContainer/MarginContainer/Ocean" unique_id=1879499247]
+layout_mode = 0
+offset_left = 334.0
+offset_top = -2042.0
+offset_right = 846.0
+offset_bottom = 6.0
+
+[node name="Fishing_Net" type="TextureRect" parent="PanelContainer/MarginContainer/Ocean/Fishing_Mechanic" unique_id=855376617]
+layout_mode = 2
+texture = ExtResource("3_0gcsj")
+
+[node name="Fishing_Net_catched" type="TextureRect" parent="PanelContainer/MarginContainer/Ocean/Fishing_Mechanic" unique_id=2034796844]
+visible = false
+layout_mode = 2
+texture = ExtResource("4_0gcsj")

@@ -2,16 +2,16 @@ extends MultiplayerSpawner
 
 @export var player_network_scene : PackedScene
 
-@export var vbox : VBoxContainer
 @export var camera : Camera2D
 func _ready() -> void:
+	# connect to the multiplayer peer connect signal, every time some join the websocket server
 	multiplayer.peer_connected.connect(_spawn_player)
+	# adding camera after player node instantiate
 	spawned.connect(_on_player_spawned)
 
 func _spawn_player(_id : int) ->void:
-	if vbox != null:
-		vbox.hide()
-
+	
+	# only server can spawn players
 	if !multiplayer.is_server():
 		return
 

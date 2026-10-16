@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bqypt8q51ajk8"]
+
+[ext_resource type="Script" uid="uid://bx2dvu32akrc1" path="res://scripts/fish_generation.gd" id="1_47a4g"]
+
+[node name="Fish_Generation" type="Node2D" unique_id=1608244400]
+script = ExtResource("1_47a4g")
+
+[node name="Timer" type="Timer" parent="." unique_id=831733350]
+one_shot = true

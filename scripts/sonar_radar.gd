@@ -3,25 +3,27 @@ extends Control
 @export var radar_radius :float = 100.0
 @export var detection_radius : float = 1000.0
 @export var signal_noise : float = 12.0
-@export var fish_count : int  = 5
-@export var fish_drift_speed : float = 12.0
+@export_range(0.0, 10.0, 0.1) var fish_density: float = 0.8
+@export_range(50.0, 2000.0, 50.0) var field_cell_size: float = 250.0
+@export var field_seed: int = 13891
 var player_node : CharacterBody2D
 
-# privates clientside
 var local_fish : Array[Dictionary]  =[]
 var pulse_time: float = 0.0
+var last_cell_bounds: Vector4i = Vector4i.ZERO
+var has_generated_field: bool = false
 
 func _enter_tree() -> void:
 	add_to_group("sonar_radar")
 
 func _ready() -> void:
 	if player_node != null:
-		_generate_test_fish()
+		_generate_fish_field()
 
 func set_player_node(player: CharacterBody2D) -> void:
 	player_node = player
 	if is_node_ready():
-		_generate_test_fish()
+		_generate_fish_field()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -31,55 +33,45 @@ func _physics_process(delta: float) -> void:
 	if player_node == null:
 		return
 
-	for i in range(local_fish.size() - 1, -1, -1):
-		var fish: Dictionary = local_fish[i]
-		var drift : Vector2 = fish["drift"]
-		var world_pos: Vector2 = fish["position"]
+	_generate_fish_field()
 
-		world_pos += drift * fish_drift_speed * delta
-		#signal drift
-		if randf() < delta * 0.5:
-			drift = drift.rotated(randf_range(-0.8,0.8))
-
-		fish["position"] = world_pos
-		fish["drift"] = drift
-		if world_pos.distance_to(player_node.global_position) > detection_radius * 2.0:
-			local_fish.remove_at(i)
-
-	_ensure_fish_near_player()
-
-	# draw fish positions only once per frame	
 	queue_redraw()
-		
 
-func _generate_test_fish() ->void:
+func _generate_fish_field() -> void:
+	if player_node == null:
+		return
+
+	var player_position: Vector2 = player_node.global_position
+	var min_cell_x: int = floori((player_position.x - detection_radius) / field_cell_size)
+	var min_cell_y: int = floori((player_position.y - detection_radius) / field_cell_size)
+	var max_cell_x: int = floori((player_position.x + detection_radius) / field_cell_size)
+	var max_cell_y: int = floori((player_position.y + detection_radius) / field_cell_size)
+	var cell_bounds := Vector4i(min_cell_x, min_cell_y, max_cell_x, max_cell_y)
+	if has_generated_field and cell_bounds == last_cell_bounds:
+		return
+
+	has_generated_field = true
+	last_cell_bounds = cell_bounds
 	local_fish.clear()
 
-	for i in range(fish_count):
-		var angle: float = randf_range(0.0,TAU)
-		var distance :float =(randf_range(
-			detection_radius * 0.15,
-			detection_radius * 0.9
-		))
-		local_fish.append({
-			"position" : player_node.global_position + Vector2.from_angle(angle) * distance,
-			"drift" : Vector2.from_angle(randf_range(0.0, TAU)),
-			"strength" : randf_range(0.65, 1.0)
-		})
+	for cell_y in range(min_cell_y, max_cell_y + 1):
+		for cell_x in range(min_cell_x, max_cell_x + 1):
+			var rng := RandomNumberGenerator.new()
+			rng.seed = hash(Vector3i(field_seed, cell_x, cell_y))
 
-func _ensure_fish_near_player() -> void:
-	for fish in local_fish:
-		var fish_position: Vector2 = fish["position"]
-		if fish_position.distance_to(player_node.global_position) <= detection_radius:
-			return
+			var count: int = floori(fish_density)
+			if rng.randf() < fish_density - count:
+				count += 1
 
-	var angle: float = randf_range(0.0, TAU)
-	var distance: float = randf_range(detection_radius * 0.15, detection_radius * 0.9)
-	local_fish.append({
-		"position": player_node.global_position + Vector2.from_angle(angle) * distance,
-		"drift": Vector2.from_angle(randf_range(0.0, TAU)),
-		"strength": randf_range(0.65, 1.0)
-	})
+			for _fish_index in range(count):
+				var fish_position := Vector2(
+					(cell_x + rng.randf()) * field_cell_size,
+					(cell_y + rng.randf()) * field_cell_size
+				)
+				local_fish.append({
+					"position": fish_position,
+					"strength": rng.randf_range(0.65, 1.0)
+				})
 
 func _draw() -> void:
 	var center :Vector2 = size / 2.0

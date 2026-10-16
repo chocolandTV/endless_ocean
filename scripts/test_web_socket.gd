@@ -7,8 +7,11 @@ const SERVER_LOCALHOST : String = "ws://127.0.0.1:9080"
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if is_server:
+		#if is server start server
 		_on_server_button_pressed()
-
+	else:
+		# client connected
+		_on_button_pressed()
 func _process(_delta: float) -> void:
 	pass
 
@@ -20,7 +23,7 @@ func _on_server_button_pressed() -> void:
 
 
 func _on_button_pressed() -> void:
-	var result:= Network.connect_to_server(SERVER_LOCALHOST)
+	var result:= Network.connect_to_server(SERVER_IP)
 	if result == OK:
 		print("connection successed")
 		if is_server:
