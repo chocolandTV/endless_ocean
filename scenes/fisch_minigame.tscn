@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dd71ytecc3cd4"]
+
+[ext_resource type="Texture2D" uid="uid://itoa8y7fdl3a" path="res://assets/textures/fish_base.png" id="1_0sddg"]
+[ext_resource type="Texture2D" uid="uid://dm7dyebi4c0ij" path="res://assets/textures/particle_bubble.png" id="2_4xev8"]
+
+[sub_resource type="Curve" id="Curve_477m3"]
+_data = [Vector2(0.008368202, 0.9887641), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="Fisch" type="TextureRect" unique_id=1352717164]
+texture = ExtResource("1_0sddg")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1620974457]
+position = Vector2(35, 17)
+amount = 3
+texture = ExtResource("2_4xev8")
+emission_shape = 3
+emission_rect_extents = Vector2(23.7, 1)
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, -200)
+damping_max = 0.3
+scale_amount_min = 0.3
+scale_amount_max = 0.8
+scale_amount_curve = SubResource("Curve_477m3")

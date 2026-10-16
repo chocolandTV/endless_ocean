@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cuyhafysk7tv6"]
+
+[ext_resource type="Shader" uid="uid://dimnf3ccs7hv4" path="res://shaders/mini_game_bg_vignette.gdshader" id="1_yqtc1"]
+
+[resource]
+shader = ExtResource("1_yqtc1")
+shader_parameter/vignette_color = Color(0.050980393, 0.09411765, 0.101960786, 1)
+shader_parameter/alpha = 1.0
+shader_parameter/inner_radius = 0.0
+shader_parameter/outer_radius = 1.0

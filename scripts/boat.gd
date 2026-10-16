@@ -29,6 +29,11 @@ func _physics_process(delta: float) -> void:
 	# only move the correct characterbody2d with your multiplayer id
 	if !is_multiplayer_authority():
 		return
+
+	### is minigame running disable control
+	if Game_UI.instance.is_minigame_running:
+		return
+	
 	if Input.is_action_just_pressed("fishing"):
 		if fishing_ui:
 			fishing_ui.cast_rod()
