@@ -27,6 +27,22 @@ tracks/0/keys = {
 "values": [Vector2(-233, 152)]
 }
 
+[sub_resource type="Animation" id="Animation_svrvl"]
+resource_name = "crazy_fish"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Fish_minigame_Spawner:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.1666666, 4.233333, 5.1, 6.133333, 7.366667, 8.766666, 9.966666),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-233, 152), Vector2(-14, 44), Vector2(160, 336), Vector2(0, 310), Vector2(2, 4), Vector2(323, 13), Vector2(323, 289), Vector2(566, 197)]
+}
+
 [sub_resource type="Animation" id="Animation_burph"]
 resource_name = "fish_swim"
 length = 10.0
@@ -43,10 +59,28 @@ tracks/0/keys = {
 "values": [Vector2(-233, 152), Vector2(-7, 249), Vector2(130, 153.00002), Vector2(130, 153.00002), Vector2(237, 241.00002), Vector2(590, 174)]
 }
 
+[sub_resource type="Animation" id="Animation_2sn1h"]
+resource_name = "piranha"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Fish_minigame_Spawner:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 6.133333, 7.0666666, 9.966666),
+"transitions": PackedFloat32Array(1, 1, 1, 0.18946455),
+"update": 0,
+"values": [Vector2(-233, 152), Vector2(8, 171), Vector2(32, 169), Vector2(3700, 174)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hd6k8"]
 _data = {
 &"RESET": SubResource("Animation_hd6k8"),
-&"fish_swim": SubResource("Animation_burph")
+&"crazy_fish": SubResource("Animation_svrvl"),
+&"fish_swim": SubResource("Animation_burph"),
+&"piranha": SubResource("Animation_2sn1h")
 }
 
 [node name="Minigame" type="Control" unique_id=569718428]
@@ -95,7 +129,7 @@ layout_mode = 0
 offset_left = -233.0
 offset_top = 152.0
 offset_right = -169.0
-offset_bottom = 215.9995
+offset_bottom = 215.99945
 theme_override_styles/panel = SubResource("StyleBoxEmpty_svrvl")
 script = ExtResource("3_v2cs6")
 _fish_scene = ExtResource("4_burph")
@@ -104,9 +138,8 @@ _fish_scene = ExtResource("4_burph")
 layout_mode = 0
 offset_left = 128.0
 offset_top = -627.0
-offset_right = 640.0
-offset_bottom = 1421.0
-scale = Vector2(0.3, 0.3)
+offset_right = 282.0
+offset_bottom = -11.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_burph")
 
 [node name="Fishing_Net" type="TextureRect" parent="PanelContainer/MarginContainer/Ocean/Fishing_Mechanic" unique_id=855376617]
@@ -117,6 +150,8 @@ texture = ExtResource("3_0gcsj")
 visible = false
 layout_mode = 2
 texture = ExtResource("4_0gcsj")
+
+[node name="CaughtFishLayer" type="Node2D" parent="PanelContainer/MarginContainer/Ocean/Fishing_Mechanic" unique_id=1652018789]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer/MarginContainer/Ocean" unique_id=1475628599]
 libraries/ = SubResource("AnimationLibrary_hd6k8")

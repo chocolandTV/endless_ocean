@@ -9,6 +9,7 @@ point_count = 2
 
 [node name="Fisch" type="TextureRect" unique_id=1352717164]
 texture = ExtResource("1_0sddg")
+stretch_mode = 2
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1620974457]
 position = Vector2(35, 17)
