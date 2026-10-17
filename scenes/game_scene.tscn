@@ -14,17 +14,20 @@
 [node name="Game_Scene" type="Node2D" unique_id=1318297918]
 script = ExtResource("1_vooo2")
 is_server = false
+testing_local = false
 
-[node name="GameState_Manager" type="Node2D" parent="." unique_id=266134849 node_paths=PackedStringArray("minigame_ui")]
+[node name="GameState_Manager" type="Node2D" parent="." unique_id=266134849 node_paths=PackedStringArray("canvas_layer")]
 script = ExtResource("3_utbpp")
-minigame_ui = NodePath("../CanvasLayer/Minigame")
+canvas_layer = NodePath("../CanvasLayer")
+minigame_scene = ExtResource("4_xsomf")
 
 [node name="World" parent="." unique_id=1165066505 instance=ExtResource("4_3avjl")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=608729439]
 script = ExtResource("3_dgsfn")
 
-[node name="HUD" parent="CanvasLayer" unique_id=2053066265 instance=ExtResource("5_tcjrq")]
+[node name="HUD" parent="CanvasLayer" unique_id=2053066265 node_paths=PackedStringArray("camera") instance=ExtResource("5_tcjrq")]
+camera = NodePath("../../Camera2D")
 
 [node name="Sonar_Radar" parent="CanvasLayer" unique_id=567801495 groups=["sonar_radar"] instance=ExtResource("2_0uih2")]
 unique_name_in_owner = true
@@ -38,17 +41,6 @@ offset_bottom = 0.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="Minigame" parent="CanvasLayer" unique_id=569718428 instance=ExtResource("4_xsomf")]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 0.0
-offset_bottom = 0.0
-grow_horizontal = 2
-grow_vertical = 2
-debug_draw_catch_rect = false
-
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=870538955 node_paths=PackedStringArray("camera")]
 _spawnable_scenes = PackedStringArray("uid://dhynxf3ksl2pf")
 spawn_path = NodePath("..")
@@ -60,3 +52,5 @@ camera = NodePath("../Camera2D")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1423944881]
 process_callback = 0
 script = ExtResource("6_camera")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1626496153]

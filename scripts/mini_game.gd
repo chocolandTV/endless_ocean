@@ -63,7 +63,7 @@ func _physics_process(_delta: float) -> void:
 		if _is_reel_in_pressed:
 			# Check win condition
 			if fishing_net.position.y < START_POSITION_Y + SAVE_OFFSET and _fish_in_net >0:
-				print("Minigame: Result win with %s fish", _fish_in_net)
+				print("Minigame: Result win with %s fish" % _fish_in_net)
 				_is_running = false
 				# get out minigame
 				Game_State_Manager.instance.on_request_finish_fishing(true,_fish_in_net)
@@ -105,7 +105,7 @@ func start_minigame(_count : int) ->void:
 	#### COUNT FISH IN NET reset
 	_fish_in_net = 0
 	# start minigame dropping fishing net
-	fish_mother. spawn_fishcrowd(_count)
+	fish_mother.spawn_fishcrowd(_count)
 	# random speed
 	var _random_speed : float = randf_range(1,3)
 	anim.speed_scale =_random_speed

@@ -13,8 +13,8 @@ enum GAME_STATE {
     BOSS = 3,
     PAUSED = 4
 }
-@export var minigame_ui : Control
-
+@export var canvas_layer : CanvasLayer
+@export var minigame_scene : PackedScene
 # singleton
 static var instance : Game_State_Manager = null
 # public variables
@@ -22,9 +22,10 @@ var current_game_state : GAME_STATE = GAME_STATE.OVERWORLD
 var last_game_state : GAME_STATE = GAME_STATE.MENU
 var player_controls_enabled : bool = true
 var player_node : Node2D = null
-
+var player_id : int = 0
 # private variables
 # minigame variables
+var _minigame_ui : Node
 var _start_time : float  = 0
 var current_session_id : int = -1
 var current_food : int = 0
@@ -66,6 +67,7 @@ func get_current_playtime() -> String:
 
 func set_player(_node : Node2D)->void:
     player_node = _node
+    player_id = int(_node.name)
 
 
 #### NETWORK
@@ -103,17 +105,22 @@ func _on_fishing_session_started(fishing_session : Dictionary)->void:
     ## print dictionary
     print("Fishing_Session: ", fishing_session)
    	#START MINIGAME
-    minigame_ui.show()
+    if _minigame_ui:
+        _minigame_ui.queue_free()
+    var _instance : Control = minigame_scene.instantiate() as Control
+    canvas_layer.add_child(_instance)
+    _minigame_ui = _instance
     #disable player controls
     player_controls_enabled = false
-    #start mingame 
-    minigame_ui.start_minigame(fishing_session.get("fish_count", 1))
+    #start mingame
+    _instance.start_minigame(fishing_session.get("fish_count", 1))
 
 # on fishing ended signal connect 
 func _on_fishing_session_ended(_success : bool, message: String) ->void:
     current_session_id = -1
     # hide minigame
-    minigame_ui.hide()
+    if _minigame_ui:
+        _minigame_ui.queue_free()
     #enable player controls
     player_controls_enabled = true
     #set gamestate

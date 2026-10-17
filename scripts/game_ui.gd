@@ -22,6 +22,6 @@ func set_minigame_ui_instance(_control : Control) ->void:
 	print("GAME_UI: Minigame_ui setted")
 
 func set_minigame_enabled(_bool : bool = true) ->void:
-	print("Game_UI: is active: ",_bool)
+	print("Game_UI: is active: %s" % _bool)
 	is_minigame_running = _bool
 	minigame_ui.visible = _bool

@@ -2,7 +2,7 @@ extends Node
 
 # signals
 signal connection_changed(_connected : bool)
-signal game_state_updated(state:  Dictionary)
+signal game_state_updated(state: Dictionary)
 signal fishing_result_received(success : bool,message : String, reward : int)
 signal fishing_session_started_received(_fishing_sessions : Dictionary)
 signal fishing_session_ended_received(_success : bool, message: String)
@@ -64,7 +64,7 @@ func start_server() -> Error:
     if not multiplayer.peer_disconnected.is_connected(_on_peer_disconnected):
         multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
-    print("Server initialize finished on port: ", SERVER_PORT)
+    print("Server initialize finished on port: %s " % SERVER_PORT)
     return OK
 
 func connect_to_server(_url : String) -> Error:

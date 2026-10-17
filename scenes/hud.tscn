@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dbjdwjrvjt8og" path="res://assets/textures/icon/boat_icon.png" id="4_uo2fv"]
 [ext_resource type="Texture2D" uid="uid://c1kkvufjjk5p0" path="res://assets/textures/icon/last_catch_icon.png" id="5_047uy"]
 [ext_resource type="Texture2D" uid="uid://dauelg3uelbbn" path="res://assets/textures/icon/time_icon.png" id="7_5pdws"]
+[ext_resource type="Texture2D" uid="uid://gvai75ifmgjn" path="res://assets/textures/particle_boat_motor.png" id="8_hd3ao"]
 
 [node name="HUD" type="Control" unique_id=2053066265]
 layout_mode = 3
@@ -42,7 +43,7 @@ texture = ExtResource("1_5ysmq")
 [node name="Food_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_01" unique_id=1054624269]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Food: 50     "
+text = "Food: 100"
 
 [node name="Player_Info_02" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=860591879]
 layout_mode = 2
@@ -88,7 +89,7 @@ layout_mode = 2
 texture = ExtResource("5_047uy")
 
 [node name="Last_Catch_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_05" unique_id=605906727]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = " No Event"
 
@@ -100,6 +101,19 @@ layout_mode = 2
 texture = ExtResource("7_5pdws")
 
 [node name="Time_Played_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_06" unique_id=1934463416]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "00:00:00"
+
+[node name="Player_Info_07" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1119597715]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_07" unique_id=1725945053]
+layout_mode = 2
+texture = ExtResource("8_hd3ao")
+expand_mode = 2
+
+[node name="Position_Grid_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_07" unique_id=1792293045]
 custom_minimum_size = Vector2(170, 0)
 layout_mode = 2
-text = "Last Catch: 101 Fish"
+text = "Position: A-13"

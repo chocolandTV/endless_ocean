@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://qtsx340mvm54" path="res://assets/textures/fishing_net_base.png" id="3_0gcsj"]
 [ext_resource type="Script" uid="uid://be75yo5u57d2h" path="res://scripts/fish_minigame_spawner.gd" id="3_v2cs6"]
 [ext_resource type="Texture2D" uid="uid://b26vfntdt6but" path="res://assets/textures/fishing_net_catch.png" id="4_0gcsj"]
-[ext_resource type="PackedScene" uid="uid://dd71ytecc3cd4" path="res://scenes/fisch_minigame.tscn" id="4_burph"]
+[ext_resource type="PackedScene" uid="uid://dd71ytecc3cd4" path="res://scenes/fisch.tscn" id="4_burph"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_svrvl"]
 
