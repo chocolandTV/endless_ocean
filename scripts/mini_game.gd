@@ -24,8 +24,7 @@ var _is_reel_in_pressed :bool = false
 #var _debug_catch_rect: Rect2
 
 # Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	start_minigame(3)
+#func _ready() -> void:
 
 #func _draw() -> void:
 	#if not debug_draw_catch_rect or not _is_running:
@@ -58,6 +57,8 @@ func _physics_process(_delta: float) -> void:
 		if !anim.is_playing() and _fish_in_net == 0:
 			print("Minigame: Result lose")
 			_is_running = false
+			# change state and send result to network
+			Game_State_Manager.instance.on_request_finish_fishing(false, _fish_in_net)
 		#  MOVE FISHING NET
 		if _is_reel_in_pressed:
 			# Check win condition
@@ -65,6 +66,7 @@ func _physics_process(_delta: float) -> void:
 				print("Minigame: Result win with %s fish", _fish_in_net)
 				_is_running = false
 				# get out minigame
+				Game_State_Manager.instance.on_request_finish_fishing(true,_fish_in_net)
 				#rpc call request result(count)
 			fishing_net.position.y -= BASE_SPEED * anim.speed_scale
 		else:
@@ -116,3 +118,4 @@ func start_minigame(_count : int) ->void:
 	if _weight < 10:
 		_animation ="crazy_fish"
 	anim.play(_animation)
+

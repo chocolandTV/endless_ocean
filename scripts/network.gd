@@ -3,8 +3,8 @@ extends Node
 # signals
 signal connection_changed(_connected : bool)
 signal game_state_updated(state:  Dictionary)
-signal fishing_result_received(_success : bool, amount : int)
-signal fishing_session_started_received(_session_id: int, phase : float)
+signal fishing_result_received(success : bool,message : String, reward : int)
+signal fishing_session_started_received(_session_id: int, _fishing_sessions : Dictionary)
 signal fishing_session_ended_received(_success : bool, message: String)
 
 
@@ -14,7 +14,7 @@ const MAX_PLAYERS: int  = 128
 const DEFAULT_START_FOOD : int  = 100
 const DEFAULT_BOSS_FOOD_CONDITION : int = 1000
 
-const FOOD_DECAY_PER_SECOND : int = 1
+const FOOD_DECAY_TIME : int = 30
 const FISHING_COOLDOWN_MS : int = 1500
 const MIN_FISHING_DURATION_MS : int = 3000
 const MAX_FISHING_DURATION_MS: int  = 45000
@@ -27,18 +27,24 @@ const MAX_TENSION : float = 100.0
 var is_server : bool  = false
 
 # Base stats
+var players = []
 var food_by_player: Dictionary = {}
 var active_fishers: Dictionary = {}
 var fishing_sessions: Dictionary = {}
 var last_fishing_time: Dictionary = {}
-
+var last_fisher_action : Dictionary = {}
 var total_progress:  int = 0
 var boss_spawned : bool = false
 var next_session_id: int  = 1
 
 # timer
 var decay_timer : float = 0.0
-
+#private debug variables 
+var _server_requests : int = 0
+var _server_calls : int  = 0
+var _server_connects : int  = 0
+var _server_errors : int =  0
+var _fishing_errors : int  = 0
 ######################### SERVER START FUNCTION 
 func start_server() -> Error:
     var peer := WebSocketMultiplayerPeer.new()
@@ -46,6 +52,7 @@ func start_server() -> Error:
 
     if err != OK:
         push_error("Server error on start: %s" % err)
+        _server_errors +=1
         return err
     
     multiplayer.multiplayer_peer = peer
@@ -68,7 +75,10 @@ func connect_to_server(_url : String) -> Error:
     # if error on creating client print
     if err != OK:
         push_error("network connection failed")
+        _server_errors +=1
         return err
+    # stats
+    _server_connects += 1
 
     # Multiplayer API add new peer
     multiplayer.multiplayer_peer = peer
@@ -87,18 +97,21 @@ func connect_to_server(_url : String) -> Error:
     return OK
 
 ######## SERVER RUNNING FUNCTIONS GAME_LOOP
-func _process(_delta : float) ->void:
+func _physics_process(_delta : float) ->void:
     if not is_server:
         return
     
 
     decay_timer +=_delta
 
-    if decay_timer >= FOOD_DECAY_PER_SECOND:
+    if decay_timer >= FOOD_DECAY_TIME:
         decay_timer = 0.0
 
         _decay_food()
-        _broadcast_state()
+        total_progress -= _count_players()
+        if total_progress <= 0:
+            total_progress = 0
+
 
 # connections success signal
 func _on_connected_to_server() ->void:
@@ -110,6 +123,11 @@ func _on_connection_failed() ->void:
 
 # connection on server disconnected signal
 func _on_server_disconnected() ->void:
+    food_by_player.clear()
+    active_fishers.clear()
+    fishing_sessions.clear()
+    last_fishing_time.clear()
+    players.clear()
     connection_changed.emit(false)
 
 func _on_peer_connected(_id : int) ->void:
@@ -118,6 +136,7 @@ func _on_peer_connected(_id : int) ->void:
 
     food_by_player[_id] = DEFAULT_START_FOOD
     active_fishers[_id] = false
+    players.append(_id)
     _broadcast_state()
 
 func _on_peer_disconnected(_id : int) ->void:
@@ -128,55 +147,52 @@ func _on_peer_disconnected(_id : int) ->void:
     active_fishers.erase(_id)
     fishing_sessions.erase(_id)
     last_fishing_time.erase(_id)
+    players.erase(_id)
     _broadcast_state()
 
 
-#client requests to begin fishing
+#client requests to begin fishing  #CHECK
 @rpc("any_peer","call_remote","reliable")
-func request_start_fishing() ->void:
+func request_start_fishing(_position : Vector2) ->void:
+    #only server execute
     if not is_server:
         return
-    
+    #stats
+    _server_requests +=1
+    #get peer id
     var sender_id : int= multiplayer.get_remote_sender_id()
-
-    if not food_by_player.has(sender_id):
-        return
-    
-    if int(food_by_player[sender_id] <= 0):
-        _send_session_message(sender_id, false, "Not enough food.")
-        return
-    
+    # if allready in session quit
     if fishing_sessions.has(sender_id):
+        print("allready in session")
+        _fishing_errors +=1
         return
+    
     
     var now : float = Time.get_ticks_msec()
     var last_time: float =int(last_fishing_time.get(sender_id,0))
 
     if now - last_time < FISHING_COOLDOWN_MS:
-        _send_session_message(sender_id, false, "Please wait.")
+        _fishing_errors +=1
+        print("so short delay to fishing")
         return
     
+    # decrease player food
+    food_by_player[sender_id] -= 1
+
     var session_id :int = next_session_id
     next_session_id += 1
-
-    # the phase defines the target motion for this session
-    var phase :float = randf_range(0.0,TAU)
-
+    # save stats
     fishing_sessions[sender_id] =  {
         "id" : session_id,
         "started_ms" : now,
-        "last_input_ms" : 0,
-        "samples" : 0,
-        "good_samples" : 0,
-        "tension" : 0.0,
-        "phase" : phase,
-        "last_balance" : 50.0,
-        "reeling" : false
+        "fish_count" : randi_range(1,5 +_count_players()),
+        "position" : _position,
     }
     active_fishers[sender_id] = true
     last_fishing_time[sender_id] = now
-
-    on_fishing_session_started.rpc_id(sender_id, session_id, phase)
+    #stat
+    _server_calls +=1
+    on_fishing_session_started.rpc_id(sender_id, session_id, fishing_sessions[sender_id])
     _broadcast_state()
 
 #clients submits its current slider and button state
@@ -187,18 +203,21 @@ func submit_fishing_input(session_id : int, balance : float, reeling: bool) -> v
     var sender_id : int = multiplayer.get_remote_sender_id()
 
     if not fishing_sessions.has(sender_id):
+        _fishing_errors += 1
         return
     
     var session : Dictionary = fishing_sessions[sender_id]
 
     if int(session["id"]) != session_id:
         print("not same session id")
+        _fishing_errors+=1
         return
     var now : float = Time.get_ticks_msec()
     var last_input: float = int(session["last_input_ms"])
 
     if now - last_input < INPUT_INTERVAL_MS:
         print("to short interval")
+        _fishing_errors +=1
         return
     
     if not is_finite(balance) or balance < 0.0 or balance > 100.0:
@@ -231,130 +250,141 @@ func submit_fishing_input(session_id : int, balance : float, reeling: bool) -> v
     fishing_sessions[sender_id]  = session
 
     if float(session["tension"]) >= MAX_TENSION:
-        _end_fishing(sender_id, false, "The fish escaped.")
+        _end_fishing(sender_id, false, "The fish escaped.",0)
 
-    
-#client asks to finish the current fishing attempt
+# client send name for last fishing
 @rpc("any_peer","call_remote","reliable")
-func request_finish_fishing(session_id : int)->void:
+func request_last_fishing(_amount: int, _name : String)->void:
     if not is_server:
         return
+    #stats
+    _server_requests +=1
+    last_fisher_action = {
+        "name" : _name,
+        "fish_count" : _amount
+    }    
+#client asks to finish the current fishing attempt
+@rpc("any_peer","call_remote","reliable")
+func request_finish_fishing(_fishing_info : Dictionary)->void:
+    if not is_server:
+        return
+    #stats
+    _server_requests +=1
     var sender_id: int = multiplayer.get_remote_sender_id()
 
     if not fishing_sessions.has(sender_id):
+        _fishing_errors +=1
         return
     
     var session: Dictionary = fishing_sessions[sender_id]
-
-    if int(session["id"]) != session_id:
-        print(" not same session id")
-        return
+    if _fishing_info.has("session_id"):
+        if int(session["id"]) != _fishing_info["session_id"]:
+            _fishing_errors +=1
+            print("not same session id")
+            return
     
     var elapsed_ms: float = Time.get_ticks_msec() - int(session["started_ms"])
     
     if elapsed_ms < MIN_FISHING_DURATION_MS:
+        _fishing_errors +=1
         print("to short to finish fishing")
         return
 
     if elapsed_ms > MAX_FISHING_DURATION_MS:
-        _end_fishing(sender_id, false, "The fish escaped.")
+        _fishing_errors +=1
+        _end_fishing(sender_id, false, "The fish escaped.",0)
         return
-    
-    var samples : int = int(session["samples"])
-    var good_samples : int  = int(session["good_samples"])
+    ################## REWARD PLAYER #####################
+    var reward : int = 0
+    if _fishing_info.has("success"):
+        if _fishing_info["success"]:
+            #reward calculation
 
-    if samples < MIN_INPUT_SAMPLES:
-        _end_fishing(sender_id, false, "Not enough fishing input")
-        return
+            if _fishing_info.has("fish_count"):
+                reward = _fishing_info["fish_count"]
+            else:
+                reward = randi_range(1,20)
 
-    #samples must be balanced while reeling
-    var accuracy : float = float(good_samples) / float (samples)
-    if accuracy < 0.6:
-        _end_fishing(sender_id,false,"The fish escaped.")
-        return
-    
-    var active_count : int  = _count_active_fishers()
-    var reward : int = randi_range(1,20)
+            #group bonus
+            reward += _count_players()
 
-    #group bonus
-    var bonus_multiplier : float = 1.0 + minf(
-        maxf(float(active_count -1), 0.0) * 0.1,
-        0.50)
+            food_by_player[sender_id] += reward
+            total_progress += reward
 
-    reward = int(round(float(reward) * bonus_multiplier))
+            if (total_progress >= DEFAULT_BOSS_FOOD_CONDITION and not boss_spawned):
+                boss_spawned = true
+                print("Amena Koi approaches!")
 
-    food_by_player[sender_id] += reward
-    total_progress += reward
-
-    print("Player %s collected %s food. Boss needs $s more." %[sender_id,reward,DEFAULT_BOSS_FOOD_CONDITION- total_progress])
-
-    if (total_progress >= DEFAULT_BOSS_FOOD_CONDITION and not boss_spawned):
-        boss_spawned = true
-        print("Amena Koi approaches!")
-
-    _end_fishing(sender_id,true,"Fish caught!")
-    on_fishing_result.rpc_id(sender_id,true, reward)
-    _broadcast_state()
+            _end_fishing(sender_id,_fishing_info["success"],"Fish caught!", reward)
+        else:
+            #Failed
+            _end_fishing(sender_id,_fishing_info["success"], "Fish escaped!", reward)
+    else:
+        #fishing info incomplete
+        print("Network: Fishing_Info incomplete")
+        _end_fishing(sender_id,_fishing_info["success"], "Fish escaped!",0)
 
 func _get_target_position(elapsed : float, phase: float) ->float:
     # deterministic movement function on client and server
-    var movement:= ( 30.0 * sin(elapsed * 1.2 + phase)
+    var movement: float= ( 30.0 * sin(elapsed * 1.2 + phase)
     + 10.0 * sin(elapsed * 2.7 + phase * 1.7)
     )
     return clampf(50.0 + movement, 10.0, 90.0)
 # get current acive fishers
-func _count_active_fishers() ->int:
-    var count: int  = 0
+func _count_players() ->int:  
+    return players.size()
 
-    for peer_id in active_fishers.keys():
-        if bool(active_fishers[peer_id]):
-            count += 1
-        
-    return count
 
+############################# IMPORTANT RESULT
 # end fishing with print and result
-func _end_fishing(sender_id: int, success : bool, message : String) ->void:
+func _end_fishing(sender_id: int, success : bool, message : String, _reward : int) ->void:
     # clear current session for client
     fishing_sessions.erase(sender_id)
 
     if active_fishers.has(sender_id):
         active_fishers[sender_id] =  false
     
-    if sender_id > 0:
-        on_fishing_session_ended.rpc_id(sender_id, success, message)
-
+    #stat
+    _server_calls +=1
+    on_fishing_result.rpc_id(sender_id, success, message, _reward)
     _broadcast_state()
-
-func _send_session_message(sender_id,success : bool, message : String) ->void:
-    on_fishing_session_ended.rpc_id(sender_id, success, message)
 
 
 @rpc("authority","call_remote","reliable")
-func on_fishing_session_started(session_id : int, phase : float)->void:
-    fishing_session_started_received.emit(session_id, phase)
+func on_fishing_session_started(session_id : int, _fishing_sessions : Dictionary)->void:
+    fishing_session_started_received.emit(session_id, _fishing_sessions)
 
 @rpc("authority","call_remote", "reliable")
 func on_fishing_session_ended(success : bool, message: String) ->void:
     fishing_session_ended_received.emit(success, message)
 
+# SERVER FUNCTION FOR SIGNAL TO FISHING_RESULT_RECEIVED
 @rpc("authority","call_remote", "reliable")
-func on_fishing_result(success : bool, amount : int) ->void:
-    fishing_result_received.emit(success, amount)
+func on_fishing_result(success : bool,message : String, reward : int) ->void:
+    fishing_result_received.emit(success, message, reward)
 
+# SERVER FUNCTION FOR SIGNAL TO GAME_STATE_UPDATED
 @rpc("authority","call_remote", "reliable")
 func receive_state(state : Dictionary) ->void:
     game_state_updated.emit(state)
+    print("received state")
 
+#### BASE DECAY FOOD FUNCTION OVER TIME
 func _decay_food() ->void:
     for player_id in food_by_player.keys():
-        food_by_player[player_id] -= FOOD_DECAY_PER_SECOND
+        food_by_player[player_id] -= FOOD_DECAY_TIME
     
+#### PUBLIC BROADCAST INFORMATIONS ABOUT THE PROGRESS FROM ALL PLAYERS
 func _broadcast_state() ->void:
     var state :Dictionary = {
         "food" : food_by_player.duplicate(),
         "progress" : total_progress,
         "boss_spawned" : boss_spawned,
-        "active_fishers" : active_fishers.duplicate()
+        "active_fishers" : active_fishers.duplicate(),
+        "last_fisher" : last_fisher_action.duplicate()
     }
     receive_state.rpc(state)
-    game_state_updated.emit(state)
+    #stats
+    _server_calls +=1
+    print("Server: %s Players connected since start, current(%s) Players,  Server_Calls: %s, Server_Requests: %s" % [_server_connects, players.size(), _server_calls,_server_requests])
+    print("Server Errors: %s Connection errors, %s fishing errors" %[_server_errors, _fishing_errors])

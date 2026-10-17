@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dqimx00yygemn" path="res://ui/sonar_radar.tscn" id="2_0uih2"]
 [ext_resource type="Script" uid="uid://cld8ckyjohu48" path="res://scripts/multiplayer_spawner.gd" id="3_0uih2"]
 [ext_resource type="Script" uid="uid://bsix0qp6k4sq" path="res://scripts/game_ui.gd" id="3_dgsfn"]
+[ext_resource type="Script" uid="uid://cveqjwjf3qtks" path="res://scripts/GameState.gd" id="3_utbpp"]
 [ext_resource type="PackedScene" uid="uid://cmbf36ngsnqqg" path="res://scenes/World.tscn" id="4_3avjl"]
 [ext_resource type="PackedScene" uid="uid://by55bdyf5h6ub" path="res://scenes/mini_game.tscn" id="4_xsomf"]
 [ext_resource type="PackedScene" uid="uid://dhynxf3ksl2pf" path="res://scenes/Boat.tscn" id="5_ihscc"]
@@ -13,12 +14,16 @@
 script = ExtResource("1_vooo2")
 is_server = false
 
+[node name="GameState_Manager" type="Node2D" parent="." unique_id=266134849 node_paths=PackedStringArray("minigame_ui")]
+script = ExtResource("3_utbpp")
+minigame_ui = NodePath("../CanvasLayer/Minigame")
+
 [node name="World" parent="." unique_id=1165066505 instance=ExtResource("4_3avjl")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=608729439]
 script = ExtResource("3_dgsfn")
 
-[node name="Sonar_Radar" parent="CanvasLayer" unique_id=567801495 instance=ExtResource("2_0uih2")]
+[node name="Sonar_Radar" parent="CanvasLayer" unique_id=567801495 groups=["sonar_radar"] instance=ExtResource("2_0uih2")]
 unique_name_in_owner = true
 anchors_preset = 3
 anchor_left = 1.0

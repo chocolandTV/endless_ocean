@@ -1,37 +1,21 @@
 extends Node2D
+### THIS SCRIPT HANDLES SERVER OR CLIENT CONNECTION TO LOCAL OR EXTERNAL SERVER
 @export var is_server : bool = true
 
 const SERVER_IP : String = "wss://endlessocean.mineralz2135.de/ws"
 const SERVER_LOCALHOST : String = "ws://127.0.0.1:9080"
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if is_server:
 		#if is server start server
-		_on_server_button_pressed()
+		var result:= Network.start_server()
+		if result == OK:
+			print("Server started")
 	else:
 		# client connected
-		_on_button_pressed()
-func _process(_delta: float) -> void:
-	pass
-
-func _on_server_button_pressed() -> void:
-	var result:= Network.start_server()
-	if result == OK:
-		print("Server started")
-
-
-
-func _on_button_pressed() -> void:
-	var result:= Network.connect_to_server(SERVER_IP)
-	if result == OK:
-		print("connection successed")
-		if is_server:
-			return
-		
-
-
-
-func _on_angel_button_pressed() -> void:
-	Network.set_fishing.rpc_id(1,true)
-	Network.request_fish.rpc_id(1)
+		var result:= Network.connect_to_server(SERVER_IP)
+		if result == OK:
+			print("connection successed")
+			

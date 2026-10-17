@@ -16,6 +16,9 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if !is_multiplayer_authority():
 		return
+	#add player node to game state manager
+	Game_State_Manager.instance.set_player(self)
+	# get sonar radar
 	var sonar_radar: Node = get_tree().get_first_node_in_group("sonar_radar")
 	if sonar_radar == null:
 		push_error("Boat requires a SonarRadar node in the scene.")
