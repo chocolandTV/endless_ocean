@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cmbf36ngsnqqg" path="res://scenes/World.tscn" id="4_3avjl"]
 [ext_resource type="PackedScene" uid="uid://by55bdyf5h6ub" path="res://scenes/mini_game.tscn" id="4_xsomf"]
 [ext_resource type="PackedScene" uid="uid://dhynxf3ksl2pf" path="res://scenes/Boat.tscn" id="5_ihscc"]
+[ext_resource type="PackedScene" uid="uid://dvkb5hh7x72vy" path="res://scenes/hud.tscn" id="5_tcjrq"]
 [ext_resource type="Script" uid="uid://4tccyiwa6xp" path="res://scripts/camera_2d.gd" id="6_camera"]
 
 [node name="Game_Scene" type="Node2D" unique_id=1318297918]
@@ -23,6 +24,8 @@ minigame_ui = NodePath("../CanvasLayer/Minigame")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=608729439]
 script = ExtResource("3_dgsfn")
 
+[node name="HUD" parent="CanvasLayer" unique_id=2053066265 instance=ExtResource("5_tcjrq")]
+
 [node name="Sonar_Radar" parent="CanvasLayer" unique_id=567801495 groups=["sonar_radar"] instance=ExtResource("2_0uih2")]
 unique_name_in_owner = true
 anchors_preset = 3
@@ -37,14 +40,14 @@ grow_vertical = 0
 
 [node name="Minigame" parent="CanvasLayer" unique_id=569718428 instance=ExtResource("4_xsomf")]
 visible = false
-anchors_preset = 1
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
-offset_left = -300.0
+anchor_bottom = 1.0
 offset_right = 0.0
-offset_bottom = 200.0
-grow_horizontal = 0
-scale = Vector2(0.205, 0.205)
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+debug_draw_catch_rect = false
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=870538955 node_paths=PackedStringArray("camera")]
 _spawnable_scenes = PackedStringArray("uid://dhynxf3ksl2pf")

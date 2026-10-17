@@ -11,6 +11,10 @@ func _ready() ->void:
 	pass
 
 func spawn_fishcrowd(_count : int) ->void:
+	#clear childs
+	for x in get_children():
+		x.queue_free()
+	
 	# reset parameter
 	current_grid = 0.0
 

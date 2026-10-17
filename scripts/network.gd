@@ -4,7 +4,7 @@ extends Node
 signal connection_changed(_connected : bool)
 signal game_state_updated(state:  Dictionary)
 signal fishing_result_received(success : bool,message : String, reward : int)
-signal fishing_session_started_received(_session_id: int, _fishing_sessions : Dictionary)
+signal fishing_session_started_received(_fishing_sessions : Dictionary)
 signal fishing_session_ended_received(_success : bool, message: String)
 
 
@@ -16,7 +16,7 @@ const DEFAULT_BOSS_FOOD_CONDITION : int = 1000
 
 const FOOD_DECAY_TIME : int = 30
 const FISHING_COOLDOWN_MS : int = 1500
-const MIN_FISHING_DURATION_MS : int = 3000
+const MIN_FISHING_DURATION_MS : int = 100
 const MAX_FISHING_DURATION_MS: int  = 45000
 const INPUT_INTERVAL_MS : int = 100
 const MIN_INPUT_SAMPLES: int  = 15
@@ -165,6 +165,8 @@ func request_start_fishing(_position : Vector2) ->void:
     if fishing_sessions.has(sender_id):
         print("allready in session")
         _fishing_errors +=1
+        await get_tree().create_timer(3.0).timeout
+        fishing_sessions.erase(sender_id)
         return
     
     
@@ -173,7 +175,8 @@ func request_start_fishing(_position : Vector2) ->void:
 
     if now - last_time < FISHING_COOLDOWN_MS:
         _fishing_errors +=1
-        print("so short delay to fishing")
+
+        print("so short delay to fishing -> %s ms" % [now - last_time < FISHING_COOLDOWN_MS])
         return
     
     # decrease player food
@@ -185,14 +188,14 @@ func request_start_fishing(_position : Vector2) ->void:
     fishing_sessions[sender_id] =  {
         "id" : session_id,
         "started_ms" : now,
-        "fish_count" : randi_range(1,5 +_count_players()),
+        "fish_count" : randi_range(1,10 +_count_players()),
         "position" : _position,
     }
     active_fishers[sender_id] = true
     last_fishing_time[sender_id] = now
     #stat
     _server_calls +=1
-    on_fishing_session_started.rpc_id(sender_id, session_id, fishing_sessions[sender_id])
+    on_fishing_session_started.rpc_id(sender_id, fishing_sessions[sender_id])
     _broadcast_state()
 
 #clients submits its current slider and button state
@@ -351,8 +354,8 @@ func _end_fishing(sender_id: int, success : bool, message : String, _reward : in
 
 
 @rpc("authority","call_remote","reliable")
-func on_fishing_session_started(session_id : int, _fishing_sessions : Dictionary)->void:
-    fishing_session_started_received.emit(session_id, _fishing_sessions)
+func on_fishing_session_started(_fishing_sessions : Dictionary)->void:
+    fishing_session_started_received.emit(_fishing_sessions)
 
 @rpc("authority","call_remote", "reliable")
 func on_fishing_session_ended(success : bool, message: String) ->void:
@@ -367,7 +370,7 @@ func on_fishing_result(success : bool,message : String, reward : int) ->void:
 @rpc("authority","call_remote", "reliable")
 func receive_state(state : Dictionary) ->void:
     game_state_updated.emit(state)
-    print("received state")
+    
 
 #### BASE DECAY FOOD FUNCTION OVER TIME
 func _decay_food() ->void:

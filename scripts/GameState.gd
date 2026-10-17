@@ -21,13 +21,14 @@ static var instance : Game_State_Manager = null
 var current_game_state : GAME_STATE = GAME_STATE.OVERWORLD
 var last_game_state : GAME_STATE = GAME_STATE.MENU
 var player_controls_enabled : bool = true
+var player_node : Node2D = null
 
 # private variables
 # minigame variables
+var _start_time : float  = 0
 var current_session_id : int = -1
 var current_food : int = 0
 var _fishing_session : Dictionary  ={}
-var _player_node : Node2D = null
 #stats
 var stat_total_fish_catched : int = 0
 var stat_total_fish_escaped : int = 0
@@ -40,6 +41,7 @@ var stat_logged_distance : float = 0
 var stat_unlocked_skins : int = 0
 
 func _ready() -> void:
+    _start_time = Time.get_ticks_msec()
     if instance == null:
         instance = self
     #network signals
@@ -52,8 +54,18 @@ func _physics_process(_delta: float) -> void:
     if Input.is_action_just_pressed("fishing") and current_game_state == GAME_STATE.OVERWORLD:
         on_fishing_button_pressed_in_overworld()
 
+func get_current_playtime() -> String:
+    # get current playtime
+    var _current_playtime : float = Time.get_ticks_msec() - _start_time
+    # format current playtime in hh:mm:ss
+    var total_seconds : int = floori(_current_playtime / 1000.0)
+    var hours : int = floori(total_seconds / 3600.0)
+    var minutes : int = floori((total_seconds % 3600) / 60.0)
+    var seconds : int = total_seconds % 60
+    return "%02d:%02d:%02d" % [hours, minutes, seconds]
+
 func set_player(_node : Node2D)->void:
-    _player_node = _node
+    player_node = _node
 
 
 #### NETWORK
@@ -61,8 +73,8 @@ func set_player(_node : Node2D)->void:
 func on_fishing_button_pressed_in_overworld() -> void:
     #get player pos and secure with zero vector
     var _position : Vector2 = Vector2.ZERO
-    if _player_node:
-        _position = _player_node.global_position
+    if player_node:
+        _position = player_node.global_position
 
     Network.request_start_fishing.rpc_id(1,_position)
 
@@ -82,6 +94,7 @@ func on_request_finish_fishing(_success : bool, _amount : int)->void:
 
 #### on fishing started signal connect
 func _on_fishing_session_started(fishing_session : Dictionary)->void:
+    print("Start Fishing Session")
     current_session_id = fishing_session.get("id", 1)
     _fishing_session = fishing_session
     #change gamestate
@@ -117,7 +130,7 @@ func _on_fishing_result_received(_success : bool, _message : String, _reward : i
         print("Fishing_UI: You catched %s fish", _reward)
         minigame_finished.emit(true, _reward, Time.get_ticks_msec())
         #Save last success fisher
-        Network.request_last_fishing(_reward, _player_node.name)
+        Network.request_last_fishing(_reward, player_node.name)
 
     else:
         print("Fishing_UI: The fish escaped.")

@@ -1,0 +1,105 @@
+[gd_scene format=3 uid="uid://dvkb5hh7x72vy"]
+
+[ext_resource type="Texture2D" uid="uid://cvut5nuu70v2d" path="res://assets/textures/icon/food_icon.png" id="1_5ysmq"]
+[ext_resource type="Script" uid="uid://chhrl76etai17" path="res://scripts/hud.gd" id="1_047uy"]
+[ext_resource type="Texture2D" uid="uid://bkx6agkf2hjnn" path="res://assets/textures/icon/progress_10_icon.png" id="2_6fi6k"]
+[ext_resource type="Texture2D" uid="uid://ohk01ihtwmci" path="res://assets/textures/icon/big_fish_icon.png" id="3_uo2fv"]
+[ext_resource type="Texture2D" uid="uid://dbjdwjrvjt8og" path="res://assets/textures/icon/boat_icon.png" id="4_uo2fv"]
+[ext_resource type="Texture2D" uid="uid://c1kkvufjjk5p0" path="res://assets/textures/icon/last_catch_icon.png" id="5_047uy"]
+[ext_resource type="Texture2D" uid="uid://dauelg3uelbbn" path="res://assets/textures/icon/time_icon.png" id="7_5pdws"]
+
+[node name="HUD" type="Control" unique_id=2053066265]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_047uy")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1697041397]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1406994360]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1062984483]
+layout_mode = 2
+
+[node name="Player_Info_01" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1702085871]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_01" unique_id=490572298]
+layout_mode = 2
+texture = ExtResource("1_5ysmq")
+
+[node name="Food_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_01" unique_id=1054624269]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Food: 50     "
+
+[node name="Player_Info_02" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=860591879]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_02" unique_id=1345565574]
+layout_mode = 2
+texture = ExtResource("2_6fi6k")
+
+[node name="Progress_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_02" unique_id=1289423268]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Progress"
+
+[node name="Player_Info_03" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=425039990]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_03" unique_id=1753832157]
+layout_mode = 2
+texture = ExtResource("3_uo2fv")
+
+[node name="Event_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_03" unique_id=2136431695]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = " No Event"
+
+[node name="Player_Info_04" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=229009521]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_04" unique_id=1059519719]
+layout_mode = 2
+texture = ExtResource("4_uo2fv")
+
+[node name="Active_Fisher_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_04" unique_id=998041370]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = " No Event"
+
+[node name="Player_Info_05" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=966216884]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_05" unique_id=1839301758]
+layout_mode = 2
+texture = ExtResource("5_047uy")
+
+[node name="Last_Catch_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_05" unique_id=605906727]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = " No Event"
+
+[node name="Player_Info_06" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1112498167]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_06" unique_id=694575162]
+layout_mode = 2
+texture = ExtResource("7_5pdws")
+
+[node name="Time_Played_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_06" unique_id=1934463416]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+text = "Last Catch: 101 Fish"
