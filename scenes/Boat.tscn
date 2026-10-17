@@ -2,15 +2,97 @@
 
 [ext_resource type="Script" uid="uid://bk81cst8g5rxr" path="res://scripts/boat.gd" id="1_mlulb"]
 [ext_resource type="Texture2D" uid="uid://ceuvemxqgvjtl" path="res://assets/textures/boat_base.png" id="2_4pna2"]
-[ext_resource type="Texture2D" uid="uid://gvai75ifmgjn" path="res://assets/textures/particle_boat_motor.png" id="2_wdn3g"]
 [ext_resource type="Script" uid="uid://bifpfu6oob7j1" path="res://scripts/name_tag.gd" id="3_nai5d"]
+[ext_resource type="Texture2D" uid="uid://3gjjiifupjr2" path="res://assets/textures/overworld_fishing_net.png" id="4_wdn3g"]
+[ext_resource type="Script" uid="uid://dgmgabennxyrs" path="res://scripts/particle_rotation.gd" id="5_x0g7w"]
+[ext_resource type="Texture2D" uid="uid://dfqjrpjd8x4xh" path="res://assets/textures/particle_boat_motor_2.png" id="6_x0g7w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nai5d"]
 size = Vector2(50, 129)
 
-[sub_resource type="Curve" id="Curve_477m3"]
-_data = [Vector2(0, 0.033707857), 0.0, 0.0, 0, 0, Vector2(0.78661084, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
+[sub_resource type="Animation" id="Animation_wdn3g"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D/Fishing_Net:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-7.4074073, 92.59259)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D/Fishing_Net:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.39, 0.39)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D/Fishing_Net:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_x0g7w"]
+resource_name = "trow_net"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D/Fishing_Net:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-7.4074073, 92.59259), Vector2(-200, 92.59259)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D/Fishing_Net:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.33333334, 0.8333333, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.39, 0.39), Vector2(1, 1), Vector2(0.395, 0.395), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D/Fishing_Net:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 4.756827),
+"update": 0,
+"values": [0.0, 3.141592653589793]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3afor"]
+_data = {
+&"RESET": SubResource("Animation_wdn3g"),
+&"trow_net": SubResource("Animation_x0g7w")
+}
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_477m3"]
 
@@ -22,7 +104,11 @@ point_count = 3
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wdn3g"]
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mlulb"]
+[sub_resource type="Curve" id="Curve_477m3"]
+_data = [Vector2(0, 0.033707857), 0.0, 0.0, 0, 0, Vector2(0.78661084, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_x0g7w"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
@@ -32,9 +118,15 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath("Name_Tag:text")
 properties/2/spawn = true
 properties/2/replication_mode = 1
-properties/3/path = NodePath("CPUParticles2D:position")
+properties/3/path = NodePath("Sprite2D/Fishing_Net:position")
 properties/3/spawn = true
 properties/3/replication_mode = 1
+properties/4/path = NodePath("Sprite2D/Fishing_Net:rotation")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("Sprite2D/Fishing_Net:scale")
+properties/5/spawn = true
+properties/5/replication_mode = 1
 
 [node name="Boat" type="CharacterBody2D" unique_id=985400639]
 collision_layer = 0
@@ -46,26 +138,20 @@ script = ExtResource("1_mlulb")
 position = Vector2(-1, 1.5)
 shape = SubResource("RectangleShape2D_nai5d")
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1903365060]
-amount = 25
-texture = ExtResource("2_wdn3g")
-randomness = 1.0
-emission_shape = 1
-emission_sphere_radius = 10.0
-spread = 180.0
-gravity = Vector2(0, 0)
-radial_accel_max = 31.75
-tangential_accel_max = 26.98
-damping_max = 40.476
-angle_max = 720.0
-scale_amount_min = 0.5
-scale_amount_max = 3.0
-scale_amount_curve = SubResource("Curve_477m3")
-color = Color(0.4117647, 0.80784315, 0.8784314, 1)
-
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1390065232]
+z_index = 1
 scale = Vector2(0.27, 0.27)
 texture = ExtResource("2_4pna2")
+
+[node name="Fishing_Net" type="Sprite2D" parent="Sprite2D" unique_id=443218970]
+modulate = Color(0.92941177, 0.52156866, 0.44705883, 1)
+position = Vector2(-7.4074073, 92.59259)
+scale = Vector2(0.39, 0.39)
+texture = ExtResource("4_wdn3g")
+
+[node name="Fishing_Net_Anim" type="AnimationPlayer" parent="Sprite2D" unique_id=1025151369]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_3afor")
 
 [node name="Name_Tag" type="Label" parent="." unique_id=1616842433 node_paths=PackedStringArray("button")]
 offset_left = -87.0
@@ -79,6 +165,7 @@ script = ExtResource("3_nai5d")
 button = NodePath("../Button")
 
 [node name="Button" type="Button" parent="." unique_id=768492110]
+z_index = 1
 offset_left = -26.0
 offset_top = -98.0
 offset_right = 24.0
@@ -89,5 +176,45 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_nai5d")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_x0g7w")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_wdn3g")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1312121142]
-replication_config = SubResource("SceneReplicationConfig_mlulb")
+[node name="Cpu_Rotation" type="Node2D" parent="." unique_id=752489865 node_paths=PackedStringArray("boat_sprite")]
+script = ExtResource("5_x0g7w")
+boat_sprite = NodePath("../Sprite2D")
+
+[node name="CPUParticles2D2" type="CPUParticles2D" parent="Cpu_Rotation" unique_id=983796232]
+position = Vector2(16, -46)
+scale = Vector2(0.27, 0.27)
+amount = 50
+texture = ExtResource("6_x0g7w")
+lifetime = 0.8
+speed_scale = 4.0
+emission_shape = 1
+emission_sphere_radius = 22.19
+particle_flag_align_y = true
+spread = 15.0
+gravity = Vector2(0, 0)
+damping_max = 11.0
+scale_amount_max = 1.5
+scale_amount_curve = SubResource("Curve_477m3")
+color = Color(0.4117647, 0.80784315, 0.8784314, 1)
+
+[node name="CPUParticles2D3" type="CPUParticles2D" parent="Cpu_Rotation" unique_id=1307478909]
+position = Vector2(-18, -46)
+scale = Vector2(0.27, 0.27)
+amount = 50
+texture = ExtResource("6_x0g7w")
+lifetime = 0.8
+speed_scale = 4.0
+emission_shape = 1
+emission_sphere_radius = 22.19
+particle_flag_align_y = true
+spread = 15.0
+gravity = Vector2(0, 0)
+damping_max = 11.0
+scale_amount_max = 1.5
+scale_amount_curve = SubResource("Curve_477m3")
+color = Color(0.4117647, 0.80784315, 0.8784314, 1)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=848838961]
+replication_config = SubResource("SceneReplicationConfig_x0g7w")
+
+[node name="Multiplayer_Horn" type="AudioStreamPlayer2D" parent="." unique_id=1860770988]

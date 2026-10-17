@@ -22,6 +22,7 @@ var current_game_state : GAME_STATE = GAME_STATE.OVERWORLD
 var last_game_state : GAME_STATE = GAME_STATE.MENU
 var player_controls_enabled : bool = true
 var player_node : Node2D = null
+var fishing_net_animation_player : AnimationPlayer
 var player_id : int = 0
 # private variables
 # minigame variables
@@ -68,11 +69,24 @@ func get_current_playtime() -> String:
 func set_player(_node : Node2D)->void:
     player_node = _node
     player_id = int(_node.name)
+    #player fishing net animation
+    fishing_net_animation_player = player_node.fishing_net_anim
 
 
 #### NETWORK
 #if fishing button is pressed in overworld ->request fishing to start
 func on_fishing_button_pressed_in_overworld() -> void:
+    #Check fishing_net_overworld_animation_state
+    if fishing_net_animation_player.is_playing():
+        return
+    #do animation play
+    fishing_net_animation_player.play("trow_net")
+    await fishing_net_animation_player.animation_finished
+    #cast on_request_start_fishing()
+
+    on_request_start_fishing()
+
+func on_request_start_fishing()->void:
     #get player pos and secure with zero vector
     var _position : Vector2 = Vector2.ZERO
     if player_node:

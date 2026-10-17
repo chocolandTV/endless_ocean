@@ -375,7 +375,7 @@ func receive_state(state : Dictionary) ->void:
 #### BASE DECAY FOOD FUNCTION OVER TIME
 func _decay_food() ->void:
     for player_id in food_by_player.keys():
-        food_by_player[player_id] -= FOOD_DECAY_TIME
+        food_by_player[player_id] -= 1
     
 #### PUBLIC BROADCAST INFORMATIONS ABOUT THE PROGRESS FROM ALL PLAYERS
 func _broadcast_state() ->void:

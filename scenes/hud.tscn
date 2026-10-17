@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cvut5nuu70v2d" path="res://assets/textures/icon/food_icon.png" id="1_5ysmq"]
 [ext_resource type="Script" uid="uid://chhrl76etai17" path="res://scripts/hud.gd" id="1_047uy"]
-[ext_resource type="Texture2D" uid="uid://bkx6agkf2hjnn" path="res://assets/textures/icon/progress_10_icon.png" id="2_6fi6k"]
+[ext_resource type="Texture2D" uid="uid://biieigmeyw0ry" path="res://assets/textures/icon/progress_100_icon.png" id="3_hd3ao"]
 [ext_resource type="Texture2D" uid="uid://ohk01ihtwmci" path="res://assets/textures/icon/big_fish_icon.png" id="3_uo2fv"]
 [ext_resource type="Texture2D" uid="uid://dbjdwjrvjt8og" path="res://assets/textures/icon/boat_icon.png" id="4_uo2fv"]
 [ext_resource type="Texture2D" uid="uid://c1kkvufjjk5p0" path="res://assets/textures/icon/last_catch_icon.png" id="5_047uy"]
@@ -50,7 +50,7 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_02" unique_id=1345565574]
 layout_mode = 2
-texture = ExtResource("2_6fi6k")
+texture = ExtResource("3_hd3ao")
 
 [node name="Progress_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_02" unique_id=1289423268]
 custom_minimum_size = Vector2(100, 0)

@@ -1,14 +1,12 @@
 extends CharacterBody2D
 class_name Boat_Controller
-@export var fishing_ui : Control
 
 @onready var sprite : Sprite2D = $Sprite2D
-
+@onready var fishing_net_anim : AnimationPlayer =$Sprite2D/Fishing_Net_Anim
 const SPEED : float = 200.0
 const ACCELERATION_TIME : float = 2.0
 const ACCELERATION : float = SPEED / ACCELERATION_TIME
-const ROTATION_SMOOTHING : float = 2.0
-
+const ROTATION_SPEED : float = 1.5
 # set player node id to given multiplayer connector
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
@@ -16,7 +14,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if !is_multiplayer_authority():
 		return
-	#add player node to game state manager
+
 	Game_State_Manager.instance.set_player(self)
 	# get sonar radar
 	var sonar_radar: Node = get_tree().get_first_node_in_group("sonar_radar")
@@ -34,22 +32,18 @@ func _physics_process(delta: float) -> void:
 		return
 
 	### is minigame running disable control
-	if Game_UI.instance.is_minigame_running:
+	if Game_State_Manager.instance.current_game_state == Game_State_Manager.GAME_STATE.FISHING:
 		return
 	
-	if Input.is_action_just_pressed("fishing"):
-		if fishing_ui:
-			fishing_ui.cast_rod()
+	var engine_power : float  = Input.get_axis("ui_down","ui_up")
+	if engine_power < 0:
+		engine_power *= 0.3
+	var steering : float = Input.get_axis("ui_left", "ui_right")
+	if not is_zero_approx(steering):
+		sprite.rotation += steering * ROTATION_SPEED * delta
 
-	var direction : Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-
-	if !direction.is_zero_approx():
-		#calculate rotation
-		var target_rotation : float = direction.angle() - PI / 2.0
-		#
-		var rotation_weight : float = 1.0 - exp(-ROTATION_SMOOTHING * delta)
-		sprite.rotation = lerp_angle(sprite.rotation, target_rotation, rotation_weight)
-
-	velocity = velocity.move_toward(direction * SPEED, ACCELERATION * delta)
-
+	var forward : Vector2 = Vector2.UP.rotated(sprite.global_rotation)
+	
+	velocity = velocity.move_toward(forward * SPEED * -engine_power, ACCELERATION * delta)
+	
 	move_and_slide()
