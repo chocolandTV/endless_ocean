@@ -7,7 +7,7 @@ class_name Sonar_Radar
 @export_range(50.0, 2000.0, 50.0) var field_cell_size: float = 250.0
 @export var field_seed: int = 13891
 
-const FISHING_DISTANCE : float = 25.0
+const FISHING_DISTANCE : float = 40.0
 
 var player_node : CharacterBody2D
 

@@ -44,11 +44,12 @@ layout_mode = 2
 text = "Amena Koi"
 horizontal_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="Panel/VBoxContainer" unique_id=264342104]
+[node name="ProgressBar" type="ProgressBar" parent="Panel/VBoxContainer" unique_id=264342104 node_paths=PackedStringArray("sprite")]
 custom_minimum_size = Vector2(512, 20)
 layout_mode = 2
 value = 100.0
 script = ExtResource("4_a77km")
+sprite = NodePath("../../../Sprite2D")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=995882412]
 collision_layer = 0

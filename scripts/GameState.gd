@@ -142,7 +142,7 @@ func on_fishing_button_pressed_in_overworld() -> void:
             push_error("Game state manager requires a player_node")
         
         if not sonar_radar.check_fish_is_nearby(player_node.global_position):
-            push_error("Game state manager: no fish nearby 25 meter")
+            print("Game state manager: no fish nearby 25 meter")
             SoundManager.play_sfx("Fishing_Net_Failed")
             return
         #print("spawn fishing net")

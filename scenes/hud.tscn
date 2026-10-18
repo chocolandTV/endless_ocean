@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://biieigmeyw0ry" path="res://assets/textures/icon/progress_100_icon.png" id="3_hd3ao"]
 [ext_resource type="Texture2D" uid="uid://ohk01ihtwmci" path="res://assets/textures/icon/big_fish_icon.png" id="3_uo2fv"]
 [ext_resource type="Texture2D" uid="uid://dbjdwjrvjt8og" path="res://assets/textures/icon/boat_icon.png" id="4_uo2fv"]
+[ext_resource type="Texture2D" uid="uid://c1kkvufjjk5p0" path="res://assets/textures/icon/last_catch_icon.png" id="5_047uy"]
 [ext_resource type="Texture2D" uid="uid://uyir5mvwlyiy" path="res://assets/textures/icon/base_fish_Catched.png" id="6_0i1j5"]
 [ext_resource type="Texture2D" uid="uid://dauelg3uelbbn" path="res://assets/textures/icon/time_icon.png" id="7_5pdws"]
 [ext_resource type="Texture2D" uid="uid://gvai75ifmgjn" path="res://assets/textures/particle_boat_motor.png" id="8_hd3ao"]
@@ -230,9 +231,9 @@ layout_mode = 2
 texture = ExtResource("3_hd3ao")
 
 [node name="Progress_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_02" unique_id=1289423268]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
-text = "Progress"
+text = "Progress  04192"
 
 [node name="Player_Info_03" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=425039990]
 layout_mode = 2
@@ -267,7 +268,7 @@ texture = ExtResource("8_hd3ao")
 expand_mode = 2
 
 [node name="Position_Grid_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_07" unique_id=1792293045]
-custom_minimum_size = Vector2(170, 0)
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Position: A-13"
 
@@ -282,6 +283,19 @@ texture = ExtResource("7_5pdws")
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "00:00:00"
+
+[node name="Player_Info_08" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=96602385]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_08" unique_id=1557535499]
+layout_mode = 2
+texture = ExtResource("5_047uy")
+
+[node name="game_done" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_08" unique_id=1427173057]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "GameDone x 1"
 
 [node name="Server_Error_Message" type="PanelContainer" parent="." unique_id=639485324]
 visible = false

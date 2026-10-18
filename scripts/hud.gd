@@ -11,12 +11,25 @@ extends Control
 @onready var position_grid_label : Label = $PanelContainer/MarginContainer/HBoxContainer/Player_Info_07/Position_Grid_Label
 @onready var _server_error_panel : PanelContainer = $Server_Error_Message
 @onready var _minigame_transition : PanelContainer = $Minigame_Transition
+
+##game done
+@onready var _game_done_panel : HBoxContainer =$PanelContainer/MarginContainer/HBoxContainer/Player_Info_08
+@onready var _game_done_label : Label = $PanelContainer/MarginContainer/HBoxContainer/Player_Info_08/game_done
+var _current_games_done : int  = 0
+
 var _current_catched_fish : int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Network.game_state_updated.connect(_on_game_state_updated)
 	Network.connection_changed.connect(_on_connection_changed)
+	Network.boss_finished.connect(_on_boss_finished)
 	Game_State_Manager.instance.minigame_finished.connect(_on_minigame_finished)
+
+
+func _on_boss_finished() ->void:
+	_game_done_panel.visible = true
+	_current_games_done +=1
+	_game_done_label.text ="GameDone x %s" %[str(_current_games_done)]
 
 func _physics_process(_delta: float) -> void:
 	time_played_label.text = Game_State_Manager.instance.get_current_playtime()

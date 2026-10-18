@@ -16,7 +16,7 @@ const DEFAULT_BOSS_FOOD_CONDITION : int = 10000
 const DEFAULT_BOSS_HEALTH : float = 100.0
 const FOOD_DECAY_TIME : int = 30
 const FISHING_COOLDOWN_MS : int = 1500
-const BOSS_DAMAGE_COOLDOWN_MS: int = 500
+const BOSS_DAMAGE_COOLDOWN_MS: int = 50
 const MIN_FISHING_DURATION_MS : int = 100
 const MAX_FISHING_DURATION_MS: int  = 45000
 const INPUT_INTERVAL_MS : int = 100
@@ -306,6 +306,7 @@ func _apply_boss_damage(sender_id: int) -> void:
 
     last_boss_damage_ms[sender_id] = now
     current_boss_health = maxf(current_boss_health - 1.0, 0.0)
+    
     if current_boss_health == 0:
         print("Boss finished Congratulation")
         _is_boss_spawned = false

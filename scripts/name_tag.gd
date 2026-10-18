@@ -8,10 +8,10 @@ func _ready() -> void:
 	if button:
 		button.pressed.connect(_on_button_pressed)
 	_name = GameSettings.ship_names.pick_random()
-	text = _name
+	_update_name_visibility()
 func _on_button_pressed() ->void:
 	_is_enabled = !_is_enabled
-	if _is_enabled:
-		text = _name
-	else:
-		text = ""
+	_update_name_visibility()
+
+func _update_name_visibility() -> void:
+	text = _name if _is_enabled and GameSettings.show_name_tags else ""

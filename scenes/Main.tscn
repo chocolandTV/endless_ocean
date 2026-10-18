@@ -1,3 +1,81 @@
 [gd_scene format=3 uid="uid://bqb2iugj01kf3"]
 
-[node name="Main" type="Node2D" unique_id=185814247]
+[ext_resource type="Script" uid="uid://dskib8dh18ecg" path="res://scripts/main.gd" id="1_elqb8"]
+[ext_resource type="Texture2D" uid="uid://bqtugey5a0rhl" path="res://assets/textures/background_ocean_deep.png" id="2_rvslj"]
+[ext_resource type="Texture2D" uid="uid://b0ho3mx5dplrj" path="res://assets/textures/amena_koi.png" id="3_rarhs"]
+[ext_resource type="Script" uid="uid://d2p84ouynb7om" path="res://scripts/menu_fish_skew.gd" id="4_c01mt"]
+[ext_resource type="Texture2D" uid="uid://ceuvemxqgvjtl" path="res://assets/textures/boat_base.png" id="4_vcsgt"]
+
+[sub_resource type="Animation" id="Animation_c01mt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("anim_mother:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_nxtc6"]
+resource_name = "base_catch_me"
+length = 60.0
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("anim_mother:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5.2, 60),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(3000, 0), Vector2(3000, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jlsqs"]
+_data = {
+&"RESET": SubResource("Animation_c01mt"),
+&"base_catch_me": SubResource("Animation_nxtc6")
+}
+
+[node name="Main" type="Control" unique_id=185814247]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_elqb8")
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=798633600]
+repeat_size = Vector2(1024, 1024)
+autoscroll = Vector2(15, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=878306050]
+texture = ExtResource("2_rvslj")
+
+[node name="anim_mother" type="Node2D" parent="." unique_id=234909584]
+
+[node name="fish" type="Sprite2D" parent="anim_mother" unique_id=1762942203]
+position = Vector2(-674, 386.00003)
+rotation = 3.1121233
+scale = Vector2(0.30500004, 0.30500004)
+texture = ExtResource("3_rarhs")
+script = ExtResource("4_c01mt")
+
+[node name="boat" type="Sprite2D" parent="anim_mother" unique_id=1241362065]
+position = Vector2(-1032.9999, 360.99997)
+rotation = -1.5705705
+scale = Vector2(0.555, 0.555)
+texture = ExtResource("4_vcsgt")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1626179366]
+libraries/ = SubResource("AnimationLibrary_jlsqs")
+autoplay = &"base_catch_me"
