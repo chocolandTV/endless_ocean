@@ -22,6 +22,7 @@ is_server = false
 testing_local = false
 
 [node name="GameState_Manager" parent="." unique_id=1698828128 node_paths=PackedStringArray("canvas_layer") instance=ExtResource("2_mw25s")]
+process_mode = 3
 canvas_layer = NodePath("../CanvasLayer")
 
 [node name="World" parent="." unique_id=1165066505 instance=ExtResource("4_3avjl")]

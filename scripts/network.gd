@@ -12,8 +12,8 @@ signal boss_spawned()
 const SERVER_PORT : int = 9080
 const MAX_PLAYERS: int  = 128
 const DEFAULT_START_FOOD : int  = 100
-const DEFAULT_BOSS_FOOD_CONDITION : int = 10 # 100000
-const DEFAULT_BOSS_HEALTH : float = 1.0
+const DEFAULT_BOSS_FOOD_CONDITION : int = 10000
+const DEFAULT_BOSS_HEALTH : float = 100.0
 const FOOD_DECAY_TIME : int = 30
 const FISHING_COOLDOWN_MS : int = 1500
 const BOSS_DAMAGE_COOLDOWN_MS: int = 500
@@ -365,6 +365,7 @@ func request_finish_fishing(_fishing_info : Dictionary)->void:
                 _is_boss_spawned = true
                 current_boss_health = DEFAULT_BOSS_HEALTH
                 print("Amena Koi approaches!")
+                _broadcast_state()
                 on_boss_spawned.rpc()
 
             _end_fishing(sender_id,_fishing_info["success"],"Fish caught!", reward)

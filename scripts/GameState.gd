@@ -3,8 +3,6 @@ class_name Game_State_Manager
 ## THIS SCRIPT HANDLES GAMESTATE AND ALL NETWORK REQUEST AND RECEIVES
 # signals
 signal minigame_finished(_result : bool, fish_count : int, time : float)
-signal game_paused(_bool : bool)
-
 
 enum GAME_STATE {
     MENU = 0,
@@ -31,6 +29,7 @@ var _start_time : float  = 0
 var current_session_id : int = -1
 var current_food : int = 0
 var _fishing_session : Dictionary  ={}
+var _is_paused : bool = false
 #stats
 var stat_total_fish_catched : int = 0
 var stat_total_fish_escaped : int = 0
@@ -62,8 +61,17 @@ func _physics_process(_delta: float) -> void:
     if Input.is_action_just_pressed("pause"):
         _pause_game()
 func _pause_game() ->void:
-    print("pause game")
-    pass
+    _is_paused = !_is_paused
+    if _is_paused:
+        print("pause game")
+        #show menu
+        set_game_state(GAME_STATE.PAUSED)
+        get_tree().paused =true
+    else:
+        print("resume game")
+        set_last_game_state()
+        get_tree().paused = false
+
 func _on_boss_finished() ->void:
     print("Boss finished Hurray")
     set_game_state(GAME_STATE.OVERWORLD)
@@ -83,7 +91,15 @@ func _set_boss_game_state() -> void:
     else:
         last_game_state = current_game_state
         current_game_state = GAME_STATE.BOSS
+func set_last_game_state() ->void:
+    if last_game_state == current_game_state:
+        print("error same gamestate")
+    
+    var _temp : GAME_STATE  = current_game_state
 
+    current_game_state = last_game_state
+    last_game_state = _temp
+    print("set last game_state")
 func set_game_state(_gamestate : GAME_STATE)->void:
     if current_game_state == _gamestate:
         return

@@ -5,10 +5,11 @@
 [ext_resource type="Texture2D" uid="uid://biieigmeyw0ry" path="res://assets/textures/icon/progress_100_icon.png" id="3_hd3ao"]
 [ext_resource type="Texture2D" uid="uid://ohk01ihtwmci" path="res://assets/textures/icon/big_fish_icon.png" id="3_uo2fv"]
 [ext_resource type="Texture2D" uid="uid://dbjdwjrvjt8og" path="res://assets/textures/icon/boat_icon.png" id="4_uo2fv"]
-[ext_resource type="Texture2D" uid="uid://c1kkvufjjk5p0" path="res://assets/textures/icon/last_catch_icon.png" id="5_047uy"]
+[ext_resource type="Texture2D" uid="uid://uyir5mvwlyiy" path="res://assets/textures/icon/base_fish_Catched.png" id="6_0i1j5"]
 [ext_resource type="Texture2D" uid="uid://dauelg3uelbbn" path="res://assets/textures/icon/time_icon.png" id="7_5pdws"]
 [ext_resource type="Texture2D" uid="uid://gvai75ifmgjn" path="res://assets/textures/particle_boat_motor.png" id="8_hd3ao"]
 [ext_resource type="Script" uid="uid://bxxhwqxxhelfc" path="res://scripts/server_error_message.gd" id="9_0i1j5"]
+[ext_resource type="Script" uid="uid://c32co470ef3q2" path="res://scripts/minigame_transition.gd" id="10_transition"]
 
 [sub_resource type="Animation" id="Animation_mphia"]
 length = 0.001
@@ -209,6 +210,18 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Food: 100"
 
+[node name="Player_Info_05" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=966216884]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_05" unique_id=1839301758]
+layout_mode = 2
+texture = ExtResource("6_0i1j5")
+
+[node name="Last_Catch_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_05" unique_id=605906727]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "x 0"
+
 [node name="Player_Info_02" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=860591879]
 layout_mode = 2
 
@@ -245,30 +258,6 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = " No Event"
 
-[node name="Player_Info_05" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=966216884]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_05" unique_id=1839301758]
-layout_mode = 2
-texture = ExtResource("5_047uy")
-
-[node name="Last_Catch_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_05" unique_id=605906727]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-text = " No Event"
-
-[node name="Player_Info_06" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1112498167]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_06" unique_id=694575162]
-layout_mode = 2
-texture = ExtResource("7_5pdws")
-
-[node name="Time_Played_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_06" unique_id=1934463416]
-custom_minimum_size = Vector2(70, 0)
-layout_mode = 2
-text = "00:00:00"
-
 [node name="Player_Info_07" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1119597715]
 layout_mode = 2
 
@@ -282,6 +271,18 @@ custom_minimum_size = Vector2(170, 0)
 layout_mode = 2
 text = "Position: A-13"
 
+[node name="Player_Info_06" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1112498167]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_06" unique_id=694575162]
+layout_mode = 2
+texture = ExtResource("7_5pdws")
+
+[node name="Time_Played_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_06" unique_id=1934463416]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "00:00:00"
+
 [node name="Server_Error_Message" type="PanelContainer" parent="." unique_id=639485324]
 visible = false
 layout_mode = 1
@@ -290,12 +291,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -267.0
-offset_top = -20.0
-offset_right = 267.0
-offset_bottom = 20.0
+offset_left = -291.0
+offset_top = -23.0
+offset_right = 291.0
+offset_bottom = 23.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("9_0i1j5")
 
 [node name="MarginContainer" type="MarginContainer" parent="Server_Error_Message" unique_id=281533792]
@@ -343,3 +345,27 @@ expand_mode = 2
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Server_Error_Message/MarginContainer/HBoxContainer" unique_id=491948336]
 libraries/ = SubResource("AnimationLibrary_apjy4")
 speed_scale = 4.0
+
+[node name="Minigame_Transition" type="PanelContainer" parent="." unique_id=1059072990]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("10_transition")
+
+[node name="ColorRect" type="ColorRect" parent="Minigame_Transition" unique_id=1408935233]
+layout_mode = 2
+color = Color(0.08, 0.38, 0.43, 1)
+
+[node name="Label" type="Label" parent="Minigame_Transition" unique_id=64693548]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 1, 0.94, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.16, 0.2, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/font_size = 54
+horizontal_alignment = 1
+vertical_alignment = 1
