@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://ckkaxyo7ehw1x"]
+
+[ext_resource type="Script" uid="uid://cveqjwjf3qtks" path="res://scripts/GameState.gd" id="1_fwy8p"]
+[ext_resource type="PackedScene" uid="uid://by55bdyf5h6ub" path="res://scenes/mini_game.tscn" id="2_88jix"]
+
+[node name="GameState_Manager" type="Node2D" unique_id=1698828128 node_paths=PackedStringArray("canvas_layer")]
+script = ExtResource("1_fwy8p")
+canvas_layer = NodePath("")
+minigame_scene = ExtResource("2_88jix")

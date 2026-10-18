@@ -6,16 +6,17 @@ signal game_state_updated(state: Dictionary)
 signal fishing_result_received(success : bool,message : String, reward : int)
 signal fishing_session_started_received(_fishing_sessions : Dictionary)
 signal fishing_session_ended_received(_success : bool, message: String)
-
-
+signal boss_finished()
+signal boss_spawned()
 # consts
 const SERVER_PORT : int = 9080
 const MAX_PLAYERS: int  = 128
 const DEFAULT_START_FOOD : int  = 100
-const DEFAULT_BOSS_FOOD_CONDITION : int = 1000
-
+const DEFAULT_BOSS_FOOD_CONDITION : int = 10 # 100000
+const DEFAULT_BOSS_HEALTH : float = 1.0
 const FOOD_DECAY_TIME : int = 30
 const FISHING_COOLDOWN_MS : int = 1500
+const BOSS_DAMAGE_COOLDOWN_MS: int = 500
 const MIN_FISHING_DURATION_MS : int = 100
 const MAX_FISHING_DURATION_MS: int  = 45000
 const INPUT_INTERVAL_MS : int = 100
@@ -32,14 +33,16 @@ var food_by_player: Dictionary = {}
 var active_fishers: Dictionary = {}
 var fishing_sessions: Dictionary = {}
 var last_fishing_time: Dictionary = {}
+var last_boss_damage_ms: Dictionary = {}
 var last_fisher_action : Dictionary = {}
 var total_progress:  int = 0
-var boss_spawned : bool = false
 var next_session_id: int  = 1
-
+var current_boss_health : float = 100.0
 # timer
 var decay_timer : float = 0.0
 #private debug variables 
+
+var _is_boss_spawned: bool = false
 var _server_requests : int = 0
 var _server_calls : int  = 0
 var _server_connects : int  = 0
@@ -127,6 +130,7 @@ func _on_server_disconnected() ->void:
     active_fishers.clear()
     fishing_sessions.clear()
     last_fishing_time.clear()
+    last_boss_damage_ms.clear()
     players.clear()
     connection_changed.emit(false)
 
@@ -147,9 +151,9 @@ func _on_peer_disconnected(_id : int) ->void:
     active_fishers.erase(_id)
     fishing_sessions.erase(_id)
     last_fishing_time.erase(_id)
+    last_boss_damage_ms.erase(_id)
     players.erase(_id)
     _broadcast_state()
-
 
 #client requests to begin fishing  #CHECK
 @rpc("any_peer","call_remote","reliable")
@@ -265,7 +269,50 @@ func request_last_fishing(_amount: int, _name : String)->void:
     last_fisher_action = {
         "name" : _name,
         "fish_count" : _amount
-    }    
+    }
+@rpc("authority","call_local", "reliable")
+func on_boss_spawned() ->void:
+    boss_spawned.emit()
+
+@rpc("any_peer","call_remote", "reliable")
+func request_boss_damage() ->void:
+    if not is_server:
+        return
+    _apply_boss_damage(multiplayer.get_remote_sender_id())
+
+func request_boss_damage_from_server(sender_id: int) -> void:
+    if not is_server:
+        return
+    _apply_boss_damage(sender_id)
+
+func _apply_boss_damage(sender_id: int) -> void:
+    print("boss damaged")
+    if not _is_boss_spawned:
+        return
+    if not players.has(sender_id):
+        return
+    if current_boss_health <= 0:
+        return
+
+    var now: int = Time.get_ticks_msec()
+    var last_hit_ms: int = int(last_boss_damage_ms.get(
+        sender_id,
+        now - BOSS_DAMAGE_COOLDOWN_MS
+    ))
+    if now - last_hit_ms < BOSS_DAMAGE_COOLDOWN_MS:
+        return
+
+    last_boss_damage_ms[sender_id] = now
+    current_boss_health = maxf(current_boss_health - 1.0, 0.0)
+    if current_boss_health == 0:
+        print("Boss finished Congratulation")
+        _is_boss_spawned = false
+        total_progress = 0
+        receive_boss_finished.rpc()
+
+        _server_calls +=1
+    _broadcast_state()
+
 #client asks to finish the current fishing attempt
 @rpc("any_peer","call_remote","reliable")
 func request_finish_fishing(_fishing_info : Dictionary)->void:
@@ -314,9 +361,11 @@ func request_finish_fishing(_fishing_info : Dictionary)->void:
             food_by_player[sender_id] += reward
             total_progress += reward
 
-            if (total_progress >= DEFAULT_BOSS_FOOD_CONDITION and not boss_spawned):
-                boss_spawned = true
+            if (total_progress >= DEFAULT_BOSS_FOOD_CONDITION) and !_is_boss_spawned:
+                _is_boss_spawned = true
+                current_boss_health = DEFAULT_BOSS_HEALTH
                 print("Amena Koi approaches!")
+                on_boss_spawned.rpc()
 
             _end_fishing(sender_id,_fishing_info["success"],"Fish caught!", reward)
         else:
@@ -371,7 +420,9 @@ func on_fishing_result(success : bool,message : String, reward : int) ->void:
 func receive_state(state : Dictionary) ->void:
     game_state_updated.emit(state)
     
-
+@rpc("authority","call_local","reliable")
+func receive_boss_finished() ->void:
+    boss_finished.emit()
 #### BASE DECAY FOOD FUNCTION OVER TIME
 func _decay_food() ->void:
     for player_id in food_by_player.keys():
@@ -382,12 +433,13 @@ func _broadcast_state() ->void:
     var state :Dictionary = {
         "food" : food_by_player.duplicate(),
         "progress" : total_progress,
-        "boss_spawned" : boss_spawned,
+        "boss_spawned" : _is_boss_spawned,
         "active_fishers" : active_fishers.duplicate(),
-        "last_fisher" : last_fisher_action.duplicate()
+        "last_fisher" : last_fisher_action.duplicate(),
+        "boss_health" : current_boss_health
     }
     receive_state.rpc(state)
     #stats
     _server_calls +=1
-    print("Server: %s Players connected since start, current(%s) Players,  Server_Calls: %s, Server_Requests: %s" % [_server_connects, players.size(), _server_calls,_server_requests])
-    print("Server Errors: %s Connection errors, %s fishing errors" %[_server_errors, _fishing_errors])
+    #print("Server: %s Players connected since start, current(%s) Players,  Server_Calls: %s, Server_Requests: %s" % [_server_connects, players.size(), _server_calls,_server_requests])
+    #print("Server Errors: %s Connection errors, %s fishing errors" %[_server_errors, _fishing_errors])

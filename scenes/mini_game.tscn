@@ -85,16 +85,21 @@ _data = {
 
 [node name="Minigame" type="Control" unique_id=569718428]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 1280.0
-offset_bottom = 720.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_3kuml")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=39109956]
 material = ExtResource("2_burph")
-layout_mode = 0
-offset_right = 1280.0
-offset_bottom = 720.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.19215687, 0.36862746, 0.4, 1)
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=190824904]

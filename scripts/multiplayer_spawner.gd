@@ -1,13 +1,16 @@
 extends MultiplayerSpawner
 
 @export var player_network_scene : PackedScene
+@export var boss_fish_scene : PackedScene
 
 @export var camera : Camera2D
 func _ready() -> void:
 	# connect to the multiplayer peer connect signal, every time some join the websocket server
 	multiplayer.peer_connected.connect(_spawn_player)
+	multiplayer.peer_disconnected.connect(_despawn_player)
 	# adding camera after player node instantiate
 	spawned.connect(_on_player_spawned)
+	Network.boss_spawned.connect(_spawn_boss)
 
 func _spawn_player(_id : int) ->void:
 	
@@ -29,6 +32,29 @@ func _spawn_player(_id : int) ->void:
 	_player_node.name = player_name
 
 	spawn_parent.add_child(_player_node)
+
+func _spawn_boss() -> void:
+	if !multiplayer.is_server():
+		return
+	if boss_fish_scene == null:
+		push_error("MultiplayerSpawner requires a boss fish scene.")
+		return
+	var spawn_parent: Node = get_node(spawn_path)
+	if spawn_parent.get_node_or_null("GiantFish") != null:
+		return
+
+	var boss_node: Node = boss_fish_scene.instantiate()
+	boss_node.name = "GiantFish"
+	spawn_parent.add_child(boss_node)
+
+func _despawn_player(peer_id: int) -> void:
+	if !multiplayer.is_server():
+		return
+
+	var spawn_parent: Node = get_node(spawn_path)
+	var player_node: Node = spawn_parent.get_node_or_null(str(peer_id))
+	if player_node != null:
+		player_node.queue_free()
 
 func _on_player_spawned(player: Node) -> void:
 	if !player.is_multiplayer_authority():

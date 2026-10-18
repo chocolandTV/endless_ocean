@@ -1,3 +1,60 @@
 [gd_scene format=3 uid="uid://dgjylskyriu5l"]
 
+[ext_resource type="Script" uid="uid://brjc4ue7n2voq" path="res://scripts/giant_fish.gd" id="1_7bbhm"]
+[ext_resource type="Texture2D" uid="uid://b0ho3mx5dplrj" path="res://assets/textures/amena_koi.png" id="1_ujytc"]
+[ext_resource type="PackedScene" uid="uid://b3ls3xow4ss1g" path="res://scenes/boss_baby_particle_scene.tscn" id="2_7bbhm"]
+[ext_resource type="Script" uid="uid://b01hhcq0q0488" path="res://scripts/giant_fish_area.gd" id="3_q8as3"]
+[ext_resource type="Script" uid="uid://cw6x1of4jexwy" path="res://scripts/boss_progress_bar.gd" id="4_a77km"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_477m3"]
+size = Vector2(487, 286)
+
 [node name="GiantFish" type="Node2D" unique_id=1346233430]
+script = ExtResource("1_7bbhm")
+particle_scene = ExtResource("2_7bbhm")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=726196387]
+texture = ExtResource("1_ujytc")
+
+[node name="Panel" type="Panel" parent="." unique_id=820092562]
+custom_minimum_size = Vector2(520, 55)
+offset_left = -262.0
+offset_top = -210.0
+offset_right = 258.0
+offset_bottom = -155.0
+tooltip_text = "cast your net to harm him"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=1538759781]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -27.0
+offset_right = 256.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer" unique_id=201409060]
+custom_minimum_size = Vector2(512, 23)
+layout_mode = 2
+text = "Amena Koi"
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="Panel/VBoxContainer" unique_id=264342104]
+custom_minimum_size = Vector2(512, 20)
+layout_mode = 2
+value = 100.0
+script = ExtResource("4_a77km")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=995882412]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_q8as3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=517112547]
+position = Vector2(10.5, -1)
+shape = SubResource("RectangleShape2D_477m3")

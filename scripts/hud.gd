@@ -9,17 +9,25 @@ extends Control
 @onready var last_catch_label : Label = $PanelContainer/MarginContainer/HBoxContainer/Player_Info_05/Last_Catch_Label
 @onready var time_played_label : Label = $PanelContainer/MarginContainer/HBoxContainer/Player_Info_06/Time_Played_Label
 @onready var position_grid_label : Label = $PanelContainer/MarginContainer/HBoxContainer/Player_Info_07/Position_Grid_Label
-
+@onready var _server_error_panel : PanelContainer = $Server_Error_Message
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Network.game_state_updated.connect(_on_game_state_updated)
-
+	Network.connection_changed.connect(_on_connection_changed)
 func _physics_process(_delta: float) -> void:
 	time_played_label.text = Game_State_Manager.instance.get_current_playtime()
 	if camera:
 		position_grid_label.text = _format_position_to_sea_coordiates(camera.global_position)
+func _on_connection_changed(_connected :bool)->void:
+	print("connection changed")
+	if _connected:
+		print("Client Connected - HUD Signal abort")
+		return 
+	else: 
+		show_server_offline_panel()
 
-
+func show_server_offline_panel() ->void:
+	_server_error_panel.visible = true
 func _on_game_state_updated(_state: Dictionary)->void:
 	var food_by_player : Dictionary = _state.get("food", {})
 	var player_id : int = Game_State_Manager.instance.player_id
@@ -32,7 +40,7 @@ func _on_game_state_updated(_state: Dictionary)->void:
 
 	var _text_is_spawned :String = "No Event"
 	if _state.get("boss_spawned", false):
-		_text_is_spawned = "Big fish event"
+		_text_is_spawned = "Anema Koi"
 	event_label.text  =    _text_is_spawned
 	var active_fishers : Dictionary = _state.get("active_fishers", {})
 	var active_fisher_count : int = 0

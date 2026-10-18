@@ -1,10 +1,10 @@
-extends Node
+extends Node2D
 class_name Game_State_Manager
 ## THIS SCRIPT HANDLES GAMESTATE AND ALL NETWORK REQUEST AND RECEIVES
 # signals
 signal minigame_finished(_result : bool, fish_count : int, time : float)
 signal game_paused(_bool : bool)
-signal boss_spawned(_position : Vector2)
+
 
 enum GAME_STATE {
     MENU = 0,
@@ -50,11 +50,47 @@ func _ready() -> void:
     Network.fishing_session_started_received.connect(_on_fishing_session_started)
     Network.fishing_session_ended_received.connect(_on_fishing_session_ended)
     Network.fishing_result_received.connect(_on_fishing_result_received)
-
+    Network.boss_spawned.connect(_on_boss_spawned)
+    Network.boss_finished.connect(_on_boss_finished)
+    Network.game_state_updated.connect(_on_network_state_updated)
 # input if fishing in overworld is pressed
 func _physics_process(_delta: float) -> void:
-    if Input.is_action_just_pressed("fishing") and current_game_state == GAME_STATE.OVERWORLD:
+    # handle fishing
+    if Input.is_action_just_pressed("fishing"):
         on_fishing_button_pressed_in_overworld()
+    #handle pause
+    if Input.is_action_just_pressed("pause"):
+        _pause_game()
+func _pause_game() ->void:
+    print("pause game")
+    pass
+func _on_boss_finished() ->void:
+    print("Boss finished Hurray")
+    set_game_state(GAME_STATE.OVERWORLD)
+
+func _on_boss_spawned() -> void:
+    _set_boss_game_state()
+
+func _on_network_state_updated(state: Dictionary) -> void:
+    if bool(state.get("boss_spawned", false)):
+        _set_boss_game_state()
+
+func _set_boss_game_state() -> void:
+    if current_game_state == GAME_STATE.BOSS:
+        return
+    if current_game_state == GAME_STATE.PAUSED:
+        last_game_state = GAME_STATE.BOSS
+    else:
+        last_game_state = current_game_state
+        current_game_state = GAME_STATE.BOSS
+
+func set_game_state(_gamestate : GAME_STATE)->void:
+    if current_game_state == _gamestate:
+        return
+    last_game_state = current_game_state
+    current_game_state = _gamestate
+    #gamestate changed
+    print("game_state changed")
 
 func get_current_playtime() -> String:
     # get current playtime
@@ -76,15 +112,26 @@ func set_player(_node : Node2D)->void:
 #### NETWORK
 #if fishing button is pressed in overworld ->request fishing to start
 func on_fishing_button_pressed_in_overworld() -> void:
-    #Check fishing_net_overworld_animation_state
-    if fishing_net_animation_player.is_playing():
-        return
-    #do animation play
-    fishing_net_animation_player.play("trow_net")
-    await fishing_net_animation_player.animation_finished
-    #cast on_request_start_fishing()
+    ############### OVERWORLD STATE
+    if current_game_state == GAME_STATE.OVERWORLD:
+        print("spawn fishing net")
+        #Check fishing_net_overworld_animation_state
+        if fishing_net_animation_player.is_playing():
+            return
+        #do animation play
+        fishing_net_animation_player.play("trow_net")
+        await fishing_net_animation_player.animation_finished
+        #cast on_request_start_fishing()
 
-    on_request_start_fishing()
+        on_request_start_fishing()
+    ############### BOSS STATE ATTACK
+    elif current_game_state == GAME_STATE.BOSS:
+        print("spawn boss net")
+        #Check fishing_net_overworld_animation_state
+        if fishing_net_animation_player.is_playing():
+            return
+        #do animation play
+        fishing_net_animation_player.play("throw_boss")
 
 func on_request_start_fishing()->void:
     #get player pos and secure with zero vector
@@ -121,13 +168,14 @@ func _on_fishing_session_started(fishing_session : Dictionary)->void:
    	#START MINIGAME
     if _minigame_ui:
         _minigame_ui.queue_free()
-    var _instance : Control = minigame_scene.instantiate() as Control
-    canvas_layer.add_child(_instance)
-    _minigame_ui = _instance
-    #disable player controls
-    player_controls_enabled = false
-    #start mingame
-    _instance.start_minigame(fishing_session.get("fish_count", 1))
+    if minigame_scene:
+        var _instance : Control = minigame_scene.instantiate() as Control
+        canvas_layer.add_child(_instance)
+        _minigame_ui = _instance
+        #disable player controls
+        player_controls_enabled = false
+        #start mingame
+        _instance.start_minigame(fishing_session.get("fish_count", 1))
 
 # on fishing ended signal connect 
 func _on_fishing_session_ended(_success : bool, message: String) ->void:
