@@ -23,6 +23,7 @@ buses/default_bus_layout="uid://ddbrahp61gn5j"
 
 Network="*uid://ccg16ovpwby2d"
 GameSettings="*uid://co3bu6mqsejv4"
+SoundManager="*uid://muwwqhl6y3l0"
 
 [display]
 

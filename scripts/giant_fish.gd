@@ -11,6 +11,7 @@ func _on_boss_finished() ->void:
     if particle_scene != null:
         var particle_effect := particle_scene.instantiate() as Node2D
         if particle_effect == null:
+            SoundManager.play_sfx("Error_Sound")
             push_error("Boss particle scene must have a Node2D root.")
         else:
             get_parent().add_child(particle_effect)

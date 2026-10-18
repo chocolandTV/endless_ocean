@@ -54,6 +54,7 @@ func start_server() -> Error:
     var err:= peer.create_server(SERVER_PORT, "*")
 
     if err != OK:
+        SoundManager.play_sfx("Error_Sound")
         push_error("Server error on start: %s" % err)
         _server_errors +=1
         return err
@@ -77,6 +78,7 @@ func connect_to_server(_url : String) -> Error:
     var err:= peer.create_client(_url)
     # if error on creating client print
     if err != OK:
+        SoundManager.play_sfx("Error_Sound")
         push_error("network connection failed")
         _server_errors +=1
         return err

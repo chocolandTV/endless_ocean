@@ -37,6 +37,7 @@ func _spawn_boss() -> void:
 	if !multiplayer.is_server():
 		return
 	if boss_fish_scene == null:
+		SoundManager.play_sfx("Error_Sound")
 		push_error("MultiplayerSpawner requires a boss fish scene.")
 		return
 	var spawn_parent: Node = get_node(spawn_path)
@@ -60,8 +61,10 @@ func _on_player_spawned(player: Node) -> void:
 	if !player.is_multiplayer_authority():
 		return
 	if camera == null:
+		SoundManager.play_sfx("Error_Sound")
 		push_error("MultiplayerSpawner requires a camera for the local player.")
 	elif !camera.has_method("follow_player"):
+		SoundManager.play_sfx("Error_Sound")
 		push_error("MultiplayerSpawner camera must implement follow_player().")
 	else:
 		camera.call("follow_player", player)

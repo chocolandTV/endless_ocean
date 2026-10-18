@@ -13,6 +13,7 @@ enum GAME_STATE {
 }
 @export var canvas_layer : CanvasLayer
 @export var minigame_scene : PackedScene
+@export var sonar_radar : Sonar_Radar
 # singleton
 static var instance : Game_State_Manager = null
 # public variables
@@ -30,6 +31,8 @@ var current_session_id : int = -1
 var current_food : int = 0
 var _fishing_session : Dictionary  ={}
 var _is_paused : bool = false
+var _pending_fish_position : Vector2 = Vector2.ZERO
+var _has_pending_fish : bool = false
 #stats
 var stat_total_fish_catched : int = 0
 var stat_total_fish_escaped : int = 0
@@ -130,32 +133,56 @@ func set_player(_node : Node2D)->void:
 func on_fishing_button_pressed_in_overworld() -> void:
     ############### OVERWORLD STATE
     if current_game_state == GAME_STATE.OVERWORLD:
-        print("spawn fishing net")
+        if sonar_radar == null:
+            SoundManager.play_sfx("Error_Sound")
+            push_error("Game state manager requires a SonarRadar reference before fishing.")
+            
+        if player_node == null:
+            SoundManager.play_sfx("Error_Sound")
+            push_error("Game state manager requires a player_node")
+        
+        if not sonar_radar.check_fish_is_nearby(player_node.global_position):
+            push_error("Game state manager: no fish nearby 25 meter")
+            SoundManager.play_sfx("Fishing_Net_Failed")
+            return
+        #print("spawn fishing net")
         #Check fishing_net_overworld_animation_state
         if fishing_net_animation_player.is_playing():
             return
         #do animation play
         fishing_net_animation_player.play("trow_net")
+        SoundManager.play_sfx("Fishing_Net")
         await fishing_net_animation_player.animation_finished
         #cast on_request_start_fishing()
-
         on_request_start_fishing()
     ############### BOSS STATE ATTACK
     elif current_game_state == GAME_STATE.BOSS:
-        print("spawn boss net")
+        #print("spawn boss net")
         #Check fishing_net_overworld_animation_state
         if fishing_net_animation_player.is_playing():
             return
         #do animation play
         fishing_net_animation_player.play("throw_boss")
-
+        SoundManager.play_sfx("Fishing_Net")
 func on_request_start_fishing()->void:
     #get player pos and secure with zero vector
-    var _position : Vector2 = Vector2.ZERO
-    if player_node:
-        _position = player_node.global_position
+    if player_node == null:
+        SoundManager.play_sfx("Error_Sound")
+        push_error("Cannot start fishing without a player node.")
+        return
+    if sonar_radar == null:
+        SoundManager.play_sfx("Error_Sound")
+        push_error("Game state manager requires a SonarRadar reference before fishing.")
+        return
 
-    Network.request_start_fishing.rpc_id(1,_position)
+    var fishing_position : Vector2 = player_node.global_position
+    if not sonar_radar.check_fish_is_nearby(fishing_position):
+        return
+
+    _pending_fish_position = fishing_position
+    _has_pending_fish = true
+    Network.request_start_fishing.rpc_id(1, fishing_position)
+
 
 #if fishing is finished request to get result
 func on_request_finish_fishing(_success : bool, _amount : int)->void:
@@ -195,6 +222,9 @@ func _on_fishing_session_started(fishing_session : Dictionary)->void:
 
 # on fishing ended signal connect 
 func _on_fishing_session_ended(_success : bool, message: String) ->void:
+    if _has_pending_fish:
+        sonar_radar.remove_fish(_pending_fish_position)
+        _has_pending_fish = false
     current_session_id = -1
     # hide minigame
     if _minigame_ui:
@@ -215,11 +245,12 @@ func _on_fishing_result_received(_success : bool, _message : String, _reward : i
         print("Fishing_UI: You catched %s fish", _reward)
         minigame_finished.emit(true, _reward, Time.get_ticks_msec())
         #Save last success fisher
-        Network.request_last_fishing(_reward, player_node.name)
+        SoundManager.play_sfx("Fish_Capured")
+        #Network.request_last_fishing(_reward, player_node.name)
 
     else:
         print("Fishing_UI: The fish escaped.")
         minigame_finished.emit(false, _reward, Time.get_ticks_msec())
-
+        SoundManager.play_sfx("Fish_Escaped")
     #stop minigame client side
     _on_fishing_session_ended(_success, _message)

@@ -10,20 +10,16 @@
 [ext_resource type="PackedScene" uid="uid://dhynxf3ksl2pf" path="res://scenes/Boat.tscn" id="5_ihscc"]
 [ext_resource type="PackedScene" uid="uid://dvkb5hh7x72vy" path="res://scenes/hud.tscn" id="5_tcjrq"]
 [ext_resource type="PackedScene" uid="uid://njxyv0hg7jr3" path="res://scenes/camera_2d.tscn" id="10_mw25s"]
-[ext_resource type="AudioStream" uid="uid://dhvmsy7w520am" path="res://sounds/207553__bone666138__ocean-ambience-costal-with-foghorn.wav" id="11_tcjrq"]
-
-[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_mw25s"]
-stream_count = 1
-stream_0 = ExtResource("11_tcjrq")
 
 [node name="Game_Scene" type="Node2D" unique_id=1318297918]
 script = ExtResource("1_vooo2")
 is_server = false
 testing_local = false
 
-[node name="GameState_Manager" parent="." unique_id=1698828128 node_paths=PackedStringArray("canvas_layer") instance=ExtResource("2_mw25s")]
+[node name="GameState_Manager" parent="." unique_id=1698828128 node_paths=PackedStringArray("canvas_layer", "sonar_radar") instance=ExtResource("2_mw25s")]
 process_mode = 3
 canvas_layer = NodePath("../CanvasLayer")
+sonar_radar = NodePath("../CanvasLayer/Sonar_Radar")
 
 [node name="World" parent="." unique_id=1165066505 instance=ExtResource("4_3avjl")]
 
@@ -31,6 +27,7 @@ canvas_layer = NodePath("../CanvasLayer")
 script = ExtResource("3_dgsfn")
 
 [node name="HUD" parent="CanvasLayer" unique_id=2053066265 node_paths=PackedStringArray("camera") instance=ExtResource("5_tcjrq")]
+mouse_filter = 1
 camera = NodePath("../../Camera2D")
 
 [node name="Sonar_Radar" parent="CanvasLayer" unique_id=567801495 groups=["sonar_radar"] instance=ExtResource("2_0uih2")]
@@ -44,6 +41,7 @@ offset_right = 0.0
 offset_bottom = 0.0
 grow_horizontal = 0
 grow_vertical = 0
+mouse_filter = 1
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=870538955 node_paths=PackedStringArray("camera")]
 _spawnable_scenes = PackedStringArray("uid://dhynxf3ksl2pf", "uid://dgjylskyriu5l")
@@ -55,8 +53,3 @@ boss_fish_scene = ExtResource("3_tcjrq")
 camera = NodePath("../Camera2D")
 
 [node name="Camera2D" parent="." unique_id=100985078 instance=ExtResource("10_mw25s")]
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1626496153]
-stream = SubResource("AudioStreamPlaylist_mw25s")
-volume_db = -19.035
-autoplay = true

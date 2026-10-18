@@ -20,8 +20,10 @@ func _ready() -> void:
 	var sonar_radar: Node = get_tree().get_first_node_in_group("sonar_radar")
 	if sonar_radar == null:
 		push_error("Boat requires a SonarRadar node in the scene.")
+		SoundManager.play_sfx("Error_Sound")
 		return
 	if !sonar_radar.has_method("set_player_node"):
+		SoundManager.play_sfx("Error_Sound")
 		push_error("SonarRadar node must implement set_player_node().")
 		return
 	sonar_radar.call("set_player_node", self)

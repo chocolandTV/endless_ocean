@@ -1,14 +1,19 @@
 extends Control
-
+class_name Sonar_Radar
 @export var radar_radius :float = 100.0
 @export var detection_radius : float = 1000.0
 @export var signal_noise : float = 12.0
 @export_range(0.0, 10.0, 0.1) var fish_density: float = 0.8
 @export_range(50.0, 2000.0, 50.0) var field_cell_size: float = 250.0
 @export var field_seed: int = 13891
+
+const FISHING_DISTANCE : float = 25.0
+
 var player_node : CharacterBody2D
 
 var local_fish : Array[Dictionary]  =[]
+# Keep removed IDs across field rebuilds so procedural fish do not respawn.
+var _removed_fish : Dictionary = {}
 var pulse_time: float = 0.0
 var last_cell_bounds: Vector4i = Vector4i.ZERO
 var has_generated_field: bool = false
@@ -19,6 +24,37 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if player_node != null:
 		_generate_fish_field()
+
+func remove_fish(_position : Vector2) -> void:
+	_generate_fish_field()
+	var fish_index : int = _find_nearby_fish_index(_position)
+	if fish_index == -1:
+		return
+
+	# Remove the nearest fish at the fishing spot and remember it for later rebuilds.
+	var fish_id : Vector3i = local_fish[fish_index]["id"]
+	_removed_fish[fish_id] = true
+	local_fish.remove_at(fish_index)
+	queue_redraw()
+
+# Returns true when the fishing position is within FISHING_DISTANCE of a sonar fish.
+func check_fish_is_nearby(_position : Vector2) -> bool:
+	_generate_fish_field()
+	return _find_nearby_fish_index(_position) != -1
+
+# Returns the nearest fish index inside the fishing range, or -1 when none is close.
+func _find_nearby_fish_index(_position : Vector2) -> int:
+	var nearest_index : int = -1
+	var nearest_distance_squared : float = FISHING_DISTANCE * FISHING_DISTANCE
+
+	for fish_index in range(local_fish.size()):
+		var fish_position : Vector2 = local_fish[fish_index]["position"]
+		var distance_squared : float = _position.distance_squared_to(fish_position)
+		if distance_squared <= nearest_distance_squared:
+			nearest_index = fish_index
+			nearest_distance_squared = distance_squared
+
+	return nearest_index
 
 func set_player_node(player: CharacterBody2D) -> void:
 	player_node = player
@@ -63,16 +99,23 @@ func _generate_fish_field() -> void:
 			if rng.randf() < fish_density - count:
 				count += 1
 
-			for _fish_index in range(count):
+			for fish_index in range(count):
 				var fish_position := Vector2(
 					(cell_x + rng.randf()) * field_cell_size,
 					(cell_y + rng.randf()) * field_cell_size
 				)
-				local_fish.append({
-					"position": fish_position,
-					"strength": rng.randf_range(0.65, 1.0)
-				})
+				var fish_strength : float = rng.randf_range(0.65, 1.0)
+				# This cell-and-index key stays stable because each cell uses a seeded RNG.
+				var fish_id := Vector3i(cell_x, cell_y, fish_index)
+				if _removed_fish.has(fish_id):
+					continue
 
+				local_fish.append({
+					"id": fish_id,
+					"position": fish_position,
+					"strength": fish_strength
+				})
+####################################### DRAWING MINIMAP
 func _draw() -> void:
 	var center :Vector2 = size / 2.0
 	var scale_factor : float = radar_radius / detection_radius

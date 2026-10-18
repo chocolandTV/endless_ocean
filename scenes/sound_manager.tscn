@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://muwwqhl6y3l0"]
+
+[ext_resource type="Script" uid="uid://b20l57hnys2fi" path="res://scripts/sound_manager.gd" id="1_v1pt3"]
+[ext_resource type="AudioStream" uid="uid://dhvmsy7w520am" path="res://sounds/207553__bone666138__ocean-ambience-costal-with-foghorn.wav" id="2_mpi5b"]
+[ext_resource type="AudioStream" uid="uid://jjqp0ytulpi7" path="res://sounds/fishnet-01.mp3" id="3_aa63w"]
+[ext_resource type="AudioStream" uid="uid://bwqwpw16g6ql3" path="res://sounds/464918__plasterbrain__loop-by-the-sea.mp3" id="3_k1d7a"]
+[ext_resource type="AudioStream" uid="uid://k6ynfxrevcdv" path="res://sounds/fishnet-02.mp3" id="4_k1d7a"]
+[ext_resource type="AudioStream" uid="uid://haycmfl04nm0" path="res://sounds/fishnet-03.mp3" id="5_gb18h"]
+[ext_resource type="AudioStream" uid="uid://bvxwix6f21i7a" path="res://sounds/failed_fishing_net.mp3" id="6_wwv6j"]
+[ext_resource type="AudioStream" uid="uid://chk8odutdqmga" path="res://sounds/sfx_fish_catched.mp3" id="7_mpi5b"]
+[ext_resource type="AudioStream" uid="uid://ce5p5ki5d6phb" path="res://sounds/sfx_click.mp3" id="8_k1d7a"]
+[ext_resource type="AudioStream" uid="uid://8yorcjqgbn36" path="res://sounds/sfx_error.mp3" id="10_gb18h"]
+[ext_resource type="AudioStream" uid="uid://dkm2831no8gxy" path="res://sounds/sfx_fish_escaped.mp3" id="10_wwv6j"]
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_g28q7"]
+shuffle = true
+fade_time = 1.0
+stream_count = 2
+stream_0 = ExtResource("2_mpi5b")
+stream_1 = ExtResource("3_k1d7a")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_tqxxy"]
+random_pitch = 1.0330547
+random_volume_offset_db = 1.25
+streams_count = 3
+stream_0/stream = ExtResource("3_aa63w")
+stream_1/stream = ExtResource("4_k1d7a")
+stream_2/stream = ExtResource("5_gb18h")
+
+[node name="Sound_Manager" type="Node" unique_id=456959907]
+script = ExtResource("1_v1pt3")
+
+[node name="Music_Overworld" type="AudioStreamPlayer" parent="." unique_id=1402250364]
+stream = SubResource("AudioStreamPlaylist_g28q7")
+bus = &"Music"
+
+[node name="Music_Menu" type="AudioStreamPlayer" parent="." unique_id=532619241]
+stream = ExtResource("3_k1d7a")
+bus = &"Music"
+parameters/looping = true
+
+[node name="Fishing_Net" type="AudioStreamPlayer" parent="." unique_id=633115763]
+stream = SubResource("AudioStreamRandomizer_tqxxy")
+bus = &"SFX"
+
+[node name="Fishing_Net_Failed" type="AudioStreamPlayer" parent="." unique_id=1578665309]
+stream = ExtResource("6_wwv6j")
+bus = &"SFX"
+
+[node name="Click_Sound" type="AudioStreamPlayer" parent="." unique_id=748741291]
+stream = ExtResource("8_k1d7a")
+bus = &"SFX"
+
+[node name="Fish_Capured" type="AudioStreamPlayer" parent="." unique_id=2493962]
+stream = ExtResource("7_mpi5b")
+volume_db = -18.909
+bus = &"SFX"
+
+[node name="Fish_Escaped" type="AudioStreamPlayer" parent="." unique_id=1572159456]
+stream = ExtResource("10_wwv6j")
+
+[node name="Error_Sound" type="AudioStreamPlayer" parent="." unique_id=1317166253]
+stream = ExtResource("10_gb18h")
+bus = &"SFX"

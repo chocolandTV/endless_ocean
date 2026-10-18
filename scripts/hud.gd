@@ -31,6 +31,7 @@ func _on_connection_changed(_connected :bool)->void:
 		show_server_offline_panel()
 
 func show_server_offline_panel() ->void:
+	SoundManager.play_sfx("Error_Sound")
 	_server_error_panel.visible = true
 func _on_game_state_updated(_state: Dictionary)->void:
 	var food_by_player : Dictionary = _state.get("food", {})
