@@ -15,9 +15,8 @@
 [sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_g28q7"]
 shuffle = true
 fade_time = 1.0
-stream_count = 2
+stream_count = 1
 stream_0 = ExtResource("2_mpi5b")
-stream_1 = ExtResource("3_k1d7a")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_tqxxy"]
 random_pitch = 1.0330547

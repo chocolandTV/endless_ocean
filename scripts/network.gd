@@ -191,10 +191,20 @@ func request_start_fishing(_position : Vector2) ->void:
     var session_id :int = next_session_id
     next_session_id += 1
     # save stats
+    # fish chance  1 of 100 to double
+    # fish chance 1 of 10000 unique fish
+    var _fishy_count : int  = randi_range(1,10 +_count_players())
+    var _fish_type : int  = randi_range(0,10)
+    if randi_range(1,100) >99:
+        _fishy_count *= 10
+    if randi_range(1, 10000)>9999:
+        _fish_type = 11 #Koi baby
+    
     fishing_sessions[sender_id] =  {
         "id" : session_id,
         "started_ms" : now,
-        "fish_count" : randi_range(1,10 +_count_players()),
+        "fish_count" : _fishy_count,
+        "fish_type" : _fish_type,
         "position" : _position,
     }
     active_fishers[sender_id] = true
@@ -358,8 +368,8 @@ func request_finish_fishing(_fishing_info : Dictionary)->void:
             else:
                 reward = randi_range(1,20)
 
-            #group bonus
-            reward += _count_players()
+            ##group bonus
+            #reward += _count_players()
 
             food_by_player[sender_id] += reward
             total_progress += reward
@@ -438,7 +448,7 @@ func _broadcast_state() ->void:
         "food" : food_by_player.duplicate(),
         "progress" : total_progress,
         "boss_spawned" : _is_boss_spawned,
-        "active_fishers" : active_fishers.duplicate(),
+        "active_fishers" : players.size(),
         "last_fisher" : last_fisher_action.duplicate(),
         "boss_health" : current_boss_health
     }

@@ -23,11 +23,12 @@ func play_sfx(sound_name: String) -> void:
 func start_menu_music() -> void:
     if _music_overworld.playing:
         _music_overworld.stop()
-    if not _music_menu.playing:
-        _music_menu.play()
+
+    _music_menu.play()
+   
 
 func start_overworld_music() ->void:
     if _music_menu.playing:
         _music_menu.stop()
-    if not _music_overworld.playing:
-        _music_overworld.play()
+
+    _music_overworld.play()
