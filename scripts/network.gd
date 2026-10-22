@@ -23,6 +23,19 @@ const INPUT_INTERVAL_MS : int = 100
 const MIN_INPUT_SAMPLES: int  = 15
 const GOOD_BALANCE_RANGE : float = 15.0
 const MAX_TENSION : float = 100.0
+# FISH TYPE CHANCE ALIAS METHOD
+const fish_type_weight : Array[int] = [
+	75,#75%,#"res://assets/textures/fish_types/fish_00.png",
+	85,#10%,#"res://assets/textures/fish_types/fish_01.png",
+	88,#3%,#"res://assets/textures/fish_types/fish_02.png",
+	91,#3%,#"res://assets/textures/fish_types/fish_03.png",
+	93,#2%,#"res://assets/textures/fish_types/fish_04.png",
+	95,#2%,#"res://assets/textures/fish_types/fish_05.png",
+	97,#2%,#"res://assets/textures/fish_types/fish_06.png",
+	98,#1%,#"res://assets/textures/fish_types/fish_07.png",
+	99,#1%,#"res://assets/textures/fish_types/fish_08.png",
+	100#1%#"res://assets/textures/fish_types/fish_09.png",
+]
 
 # only server executes
 var is_server : bool  = false
@@ -193,12 +206,13 @@ func request_start_fishing(_position : Vector2) ->void:
     # save stats
     # fish chance  1 of 100 to double
     # fish chance 1 of 10000 unique fish
-    var _fishy_count : int  = randi_range(1,10 +_count_players())
-    var _fish_type : int  = randi_range(0,10)
+    var _fishy_count : int  = randi_range(1,10) +_count_players()
+    var _fish_type : int  = _get_weighted_fish_type(randi_range(0,9))
+
     if randi_range(1,100) >99:
         _fishy_count *= 10
     if randi_range(1, 10000)>9999:
-        _fish_type = 11 #Koi baby
+        _fish_type = 10 #Koi baby
     
     fishing_sessions[sender_id] =  {
         "id" : session_id,
@@ -457,3 +471,16 @@ func _broadcast_state() ->void:
     _server_calls +=1
     #print("Server: %s Players connected since start, current(%s) Players,  Server_Calls: %s, Server_Requests: %s" % [_server_connects, players.size(), _server_calls,_server_requests])
     #print("Server Errors: %s Connection errors, %s fishing errors" %[_server_errors, _fishing_errors])
+
+
+func _get_weighted_fish_type(_random_int : int) -> int:
+    
+    var _check_int : int = _random_int
+    if _check_int:
+        if _check_int < 0 or _check_int > 101:
+            push_error("get_weighted_Fish_type: Error lower 0 or higher 101 : return 0")
+            return 0
+        for index in range(0,fish_type_weight.size()):
+            if _check_int <= fish_type_weight[index]:
+                return index
+    return 0    

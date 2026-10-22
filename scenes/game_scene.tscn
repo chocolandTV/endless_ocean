@@ -14,7 +14,6 @@
 [node name="Game_Scene" type="Node2D" unique_id=1318297918]
 script = ExtResource("1_vooo2")
 is_server = false
-testing_local = false
 
 [node name="GameState_Manager" parent="." unique_id=1698828128 node_paths=PackedStringArray("canvas_layer", "sonar_radar") instance=ExtResource("2_mw25s")]
 process_mode = 3

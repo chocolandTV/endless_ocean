@@ -89,7 +89,9 @@ func _physics_process(_delta: float) -> void:
 			if catch_rect.has_point(fish.get_global_rect().get_center()):
 				# get new fish
 				_fish_in_net += 1
-				# Keep the fish's global position and scale without PanelContainer layout.
+				if fish.has_method("stop_swimming"):
+					fish.call("stop_swimming")
+				# Keep the fish's global position and scale without PanelContainer layout
 				fish.reparent(caught_fish_layer, true)
 				# play catchi animation and sound
 				fishing_net_catched.visible = true
@@ -98,14 +100,14 @@ func _physics_process(_delta: float) -> void:
 		# after net is up send rpc to server and add fish amount
 		
 # must be cast with set_minigame_enabled(_bool : bool = true)
-func start_minigame(_count : int) ->void:
+func start_minigame(_count : int, _type : int) ->void:
 	fishing_net.position.y = START_POSITION_Y
 	_is_running = true
 	#reset positions / sprites
 	#### COUNT FISH IN NET reset
 	_fish_in_net = 0
 	# start minigame dropping fishing net
-	fish_mother.spawn_fishcrowd(_count)
+	fish_mother.spawn_fishcrowd(_count, _type)
 	# random speed
 	var _random_speed : float = randf_range(1,3)
 	anim.speed_scale =_random_speed
@@ -118,4 +120,3 @@ func start_minigame(_count : int) ->void:
 	if _weight < 10:
 		_animation ="crazy_fish"
 	anim.play(_animation)
-

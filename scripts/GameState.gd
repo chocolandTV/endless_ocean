@@ -218,7 +218,7 @@ func _on_fishing_session_started(fishing_session : Dictionary)->void:
         #disable player controls
         player_controls_enabled = false
         #start mingame
-        _instance.start_minigame(fishing_session.get("fish_count", 1))
+        _instance.start_minigame(fishing_session.get("fish_count", 1),fishing_session.get("fish_type",0))
 
 # on fishing ended signal connect 
 func _on_fishing_session_ended(_success : bool, message: String) ->void:

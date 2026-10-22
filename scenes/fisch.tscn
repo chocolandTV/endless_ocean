@@ -1,15 +1,17 @@
 [gd_scene format=3 uid="uid://dd71ytecc3cd4"]
 
-[ext_resource type="Texture2D" uid="uid://itoa8y7fdl3a" path="res://assets/textures/fish_base.png" id="1_0sddg"]
+[ext_resource type="Texture2D" uid="uid://vfm7nnoaai3p" path="res://assets/textures/fish_types/fish_00.png" id="1_heq7i"]
 [ext_resource type="Texture2D" uid="uid://dm7dyebi4c0ij" path="res://assets/textures/particle_bubble.png" id="2_4xev8"]
+[ext_resource type="Script" uid="uid://bx63c1vfo0pob" path="res://scripts/fisch_movement.gd" id="3_movement"]
 
 [sub_resource type="Curve" id="Curve_477m3"]
 _data = [Vector2(0.008368202, 0.9887641), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [node name="Fisch" type="TextureRect" unique_id=1352717164]
-texture = ExtResource("1_0sddg")
+texture = ExtResource("1_heq7i")
 stretch_mode = 2
+script = ExtResource("3_movement")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1620974457]
 position = Vector2(35, 17)

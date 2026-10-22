@@ -9,13 +9,15 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta: float) -> void:
-
+	if !is_multiplayer_authority():
+		return
 	if Input.is_action_just_pressed("horn"):
 		_try_to_horn()
 
 func _try_to_horn() ->void:
-	if !playing and !is_cooldown:
-		var _pitch_scale : float = randf_range(0.5, 1)
+	if !is_cooldown:
+		var _pitch_scale : float = randf_range(0.85, 1.15)
+		pitch_scale = _pitch_scale
 		play()
 		is_cooldown = true
 		timer.start()
