@@ -13,7 +13,6 @@
 
 [node name="Game_Scene" type="Node2D" unique_id=1318297918]
 script = ExtResource("1_vooo2")
-is_server = false
 
 [node name="GameState_Manager" parent="." unique_id=1698828128 node_paths=PackedStringArray("canvas_layer", "sonar_radar") instance=ExtResource("2_mw25s")]
 process_mode = 3
@@ -21,6 +20,25 @@ canvas_layer = NodePath("../CanvasLayer")
 sonar_radar = NodePath("../CanvasLayer/Sonar_Radar")
 
 [node name="World" parent="." unique_id=1165066505 instance=ExtResource("4_3avjl")]
+
+[node name="Player_Root" type="Node2D" parent="." unique_id=421390955]
+
+[node name="Player_Spawner" type="MultiplayerSpawner" parent="Player_Root" unique_id=870538955 node_paths=PackedStringArray("camera")]
+_spawnable_scenes = PackedStringArray("uid://dhynxf3ksl2pf", "uid://dgjylskyriu5l")
+spawn_path = NodePath("..")
+spawn_limit = 140
+script = ExtResource("3_0uih2")
+player_network_scene = ExtResource("5_ihscc")
+boss_fish_scene = ExtResource("3_tcjrq")
+camera = NodePath("../../Camera2D")
+
+[node name="Endemic_Life_Root" type="Node2D" parent="." unique_id=317103668]
+
+[node name="Endemic_Spawner" type="MultiplayerSpawner" parent="Endemic_Life_Root" unique_id=1828713776]
+spawn_path = NodePath("..")
+spawn_limit = 50
+
+[node name="Camera2D" parent="." unique_id=100985078 instance=ExtResource("10_mw25s")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=608729439]
 script = ExtResource("3_dgsfn")
@@ -41,14 +59,3 @@ offset_bottom = 0.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 1
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=870538955 node_paths=PackedStringArray("camera")]
-_spawnable_scenes = PackedStringArray("uid://dhynxf3ksl2pf", "uid://dgjylskyriu5l")
-spawn_path = NodePath("..")
-spawn_limit = 140
-script = ExtResource("3_0uih2")
-player_network_scene = ExtResource("5_ihscc")
-boss_fish_scene = ExtResource("3_tcjrq")
-camera = NodePath("../Camera2D")
-
-[node name="Camera2D" parent="." unique_id=100985078 instance=ExtResource("10_mw25s")]
