@@ -60,12 +60,9 @@ func _on_game_state_updated(_state: Dictionary)->void:
 	if _state.get("boss_spawned", false):
 		_text_is_spawned = "Anema Koi"
 	event_label.text  =    _text_is_spawned
-	var active_fishers : Dictionary = _state.get("active_fishers", {})
-	var active_fisher_count : int = 0
-	for is_active in active_fishers.values():
-		if is_active == true:
-			active_fisher_count += 1
-	active_fisher_label.text = str(active_fisher_count)
+	var active_fishers : int = _state.get("active_fishers",1)
+	
+	active_fisher_label.text = str(active_fishers)
 
 	var last_fisher : Dictionary = _state.get("last_fisher", {})
 	if last_fisher.has("name") and last_fisher.has("fish_count"):

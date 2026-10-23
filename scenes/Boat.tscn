@@ -191,16 +191,6 @@ _data = {
 &"trow_net": SubResource("Animation_x0g7w")
 }
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_477m3"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4pna2"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nai5d"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x0g7w"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wdn3g"]
-
 [sub_resource type="Curve" id="Curve_477m3"]
 _data = [Vector2(0, 0.033707857), 0.0, 0.0, 0, 0, Vector2(0.78661084, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
@@ -279,7 +269,7 @@ texture = ExtResource("4_551pn")
 texture_scale = 2.0
 script = ExtResource("5_jnvhb")
 
-[node name="Name_Tag" type="Label" parent="." unique_id=1616842433 node_paths=PackedStringArray("button")]
+[node name="Name_Tag" type="Label" parent="." unique_id=1616842433]
 offset_left = -87.0
 offset_top = -98.0
 offset_right = 86.0
@@ -288,19 +278,6 @@ theme_override_colors/font_color = Color(0.92941177, 0.52156866, 0.44705883, 1)
 text = "Betty"
 horizontal_alignment = 1
 script = ExtResource("3_nai5d")
-button = NodePath("../Button")
-
-[node name="Button" type="Button" parent="." unique_id=768492110]
-z_index = 1
-offset_left = -26.0
-offset_top = -98.0
-offset_right = 24.0
-offset_bottom = -73.0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_477m3")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_4pna2")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_nai5d")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_x0g7w")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_wdn3g")
 
 [node name="Cpu_Rotation" type="Node2D" parent="." unique_id=752489865 node_paths=PackedStringArray("boat_sprite")]
 script = ExtResource("5_x0g7w")
@@ -342,8 +319,6 @@ color = Color(0.4117647, 0.80784315, 0.8784314, 1)
 
 [node name="Multiplayer_Horn" type="AudioStreamPlayer2D" parent="." unique_id=1860770988]
 stream = ExtResource("7_gbyt4")
-volume_db = -25.0
-pitch_scale = 0.7
 bus = &"Horns"
 script = ExtResource("8_551pn")
 

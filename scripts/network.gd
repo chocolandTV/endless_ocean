@@ -24,19 +24,19 @@ const MIN_INPUT_SAMPLES: int  = 15
 const GOOD_BALANCE_RANGE : float = 15.0
 const MAX_TENSION : float = 100.0
 # FISH TYPE CHANCE ALIAS METHOD
-const fish_type_weight : Array[int] = [
+const FISH_TYPE_WEIGHT : Array[int] = [
 	75,#75%,#"res://assets/textures/fish_types/fish_00.png",
-	85,#10%,#"res://assets/textures/fish_types/fish_01.png",
-	88,#3%,#"res://assets/textures/fish_types/fish_02.png",
-	91,#3%,#"res://assets/textures/fish_types/fish_03.png",
-	93,#2%,#"res://assets/textures/fish_types/fish_04.png",
-	95,#2%,#"res://assets/textures/fish_types/fish_05.png",
-	97,#2%,#"res://assets/textures/fish_types/fish_06.png",
-	98,#1%,#"res://assets/textures/fish_types/fish_07.png",
-	99,#1%,#"res://assets/textures/fish_types/fish_08.png",
-	100#1%#"res://assets/textures/fish_types/fish_09.png",
+	10,#10%,#"res://assets/textures/fish_types/fish_01.png",
+	3,#3%,#"res://assets/textures/fish_types/fish_02.png",
+	3,#3%,#"res://assets/textures/fish_types/fish_03.png",
+	2,#2%,#"res://assets/textures/fish_types/fish_04.png",
+	2,#2%,#"res://assets/textures/fish_types/fish_05.png",
+	2,#2%,#"res://assets/textures/fish_types/fish_06.png",
+	1,#1%,#"res://assets/textures/fish_types/fish_07.png",
+	1,#1%,#"res://assets/textures/fish_types/fish_08.png",
+	1#1%#"res://assets/textures/fish_types/fish_09.png",
 ]
-
+const FISH_TYPE_SUM : int = 100
 # only server executes
 var is_server : bool  = false
 
@@ -67,7 +67,6 @@ func start_server() -> Error:
     var err:= peer.create_server(SERVER_PORT, "*")
 
     if err != OK:
-        SoundManager.play_sfx("Error_Sound")
         push_error("Server error on start: %s" % err)
         _server_errors +=1
         return err
@@ -82,6 +81,10 @@ func start_server() -> Error:
         multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
     print("Server initialize finished on port: %s " % SERVER_PORT)
+    #for x in range(0, 600):
+    #    var _randi : int  = randi_range(0,100)
+    #    var _fish_type : int = _get_weighted_fish_type(_randi)
+    #    print("Random : %s Fish_type : %s" %[_randi,_fish_type])
     return OK
 
 func connect_to_server(_url : String) -> Error:
@@ -207,13 +210,13 @@ func request_start_fishing(_position : Vector2) ->void:
     # fish chance  1 of 100 to double
     # fish chance 1 of 10000 unique fish
     var _fishy_count : int  = randi_range(1,10) +_count_players()
-    var _fish_type : int  = _get_weighted_fish_type(randi_range(0,9))
+    var _fish_type : int  = _get_weighted_fish_type(randi_range(1,FISH_TYPE_SUM))
 
     if randi_range(1,100) >99:
         _fishy_count *= 10
     if randi_range(1, 10000)>9999:
         _fish_type = 10 #Koi baby
-    
+    print("Network: Server select Fish Type %s " % _fish_type)
     fishing_sessions[sender_id] =  {
         "id" : session_id,
         "started_ms" : now,
@@ -474,13 +477,17 @@ func _broadcast_state() ->void:
 
 
 func _get_weighted_fish_type(_random_int : int) -> int:
-    
+
     var _check_int : int = _random_int
+    var _condition_value:  int = 0
     if _check_int:
-        if _check_int < 0 or _check_int > 101:
+        if _check_int < 0 or _check_int > FISH_TYPE_SUM:
             push_error("get_weighted_Fish_type: Error lower 0 or higher 101 : return 0")
             return 0
-        for index in range(0,fish_type_weight.size()):
-            if _check_int <= fish_type_weight[index]:
-                return index
-    return 0    
+        for index in range(0,FISH_TYPE_WEIGHT.size()):
+            _condition_value += FISH_TYPE_WEIGHT[index]
+            if _check_int <= _condition_value:
+               return index
+    # if all else fails
+    return 0
+    

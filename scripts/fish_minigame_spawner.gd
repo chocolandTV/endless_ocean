@@ -5,7 +5,7 @@ extends Panel
 #show maximal 100 fishies
 const MAX_FISH_COUNT : int = 100
 # max fish crowd size 320 pixel
-const CROWD_RADIUS : float = 160.0
+const CROWD_RADIUS : float = 80.0
 # maximum distance a fish can drift from its spawn point
 const MAX_SWIM_DISTANCE : float = 8.0
 #eye of ezbhan -sunflower growth - angle in radians
@@ -21,11 +21,6 @@ func spawn_fishcrowd(_count : int, _type : int) ->void:
 	var fish_count : int= clampi(_count, 0, MAX_FISH_COUNT)
 	if fish_count == 0:
 		return
-	#scene is empty return
-	if fish_scenes.is_empty():
-		push_error("No fish scenes are configured")
-		return
-
 	#select scene and check if not null
 	var fish_scene := fish_scenes
 	if fish_scene == null:

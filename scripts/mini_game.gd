@@ -13,9 +13,10 @@ class_name Minigame
 @onready var anim : AnimationPlayer = $PanelContainer/MarginContainer/Ocean/AnimationPlayer
 
 # const variables
-const BASE_SPEED : float  = 5.0
+const BASE_SPEED : float  = 4.3
 const START_POSITION_Y : float = -627.0
 const SAVE_OFFSET :float = 100
+const END_POSITION_Y : float =  -760.0
 
 #private variables
 var _fish_in_net : int = 0
@@ -62,7 +63,7 @@ func _physics_process(_delta: float) -> void:
 		#  MOVE FISHING NET
 		if _is_reel_in_pressed:
 			# Check win condition
-			if fishing_net.position.y < START_POSITION_Y + SAVE_OFFSET and _fish_in_net >0:
+			if fishing_net.position.y < END_POSITION_Y + SAVE_OFFSET and _fish_in_net >0:
 				print("Minigame: Result win with %s fish" % _fish_in_net)
 				_is_running = false
 				# get out minigame
