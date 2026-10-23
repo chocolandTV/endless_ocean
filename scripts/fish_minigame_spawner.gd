@@ -5,7 +5,7 @@ extends Panel
 #show maximal 100 fishies
 const MAX_FISH_COUNT : int = 100
 # max fish crowd size 320 pixel
-const CROWD_RADIUS : float = 80.0
+const CROWD_RADIUS : float = 40.0
 # maximum distance a fish can drift from its spawn point
 const MAX_SWIM_DISTANCE : float = 8.0
 #eye of ezbhan -sunflower growth - angle in radians

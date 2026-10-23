@@ -5,6 +5,10 @@ var music_volume: float = 0.8
 var sfx_volume: float = 0.8
 var show_name_tags: bool = true
 
+# base core settings
+var is_game_server : bool  = false
+var is_game_save_data_local : bool = true
+
 const ship_names: Array[String] = [
 	"Sweet Caroline",
 	"Flying Marry",

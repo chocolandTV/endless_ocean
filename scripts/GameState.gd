@@ -207,7 +207,7 @@ func _on_fishing_session_started(fishing_session : Dictionary)->void:
     last_game_state = current_game_state
     current_game_state = GAME_STATE.FISHING
     ## print dictionary
-    print("Fishing_Session: ", fishing_session)
+    #print("Fishing_Session: ", fishing_session)
    	#START MINIGAME
     if _minigame_ui:
         _minigame_ui.queue_free()

@@ -37,8 +37,6 @@ const FISH_TYPE_WEIGHT : Array[int] = [
 	1#1%#"res://assets/textures/fish_types/fish_09.png",
 ]
 const FISH_TYPE_SUM : int = 100
-# only server executes
-var is_server : bool  = false
 
 # Base stats
 var players = []
@@ -53,8 +51,10 @@ var next_session_id: int  = 1
 var current_boss_health : float = 100.0
 # timer
 var decay_timer : float = 0.0
-#private debug variables 
 
+#private debug variables 
+# only server executes
+var _is_server : bool  = false
 var _is_boss_spawned: bool = false
 var _server_requests : int = 0
 var _server_calls : int  = 0
@@ -72,7 +72,7 @@ func start_server() -> Error:
         return err
     
     multiplayer.multiplayer_peer = peer
-    is_server = true
+    _is_server = true
 
     if not multiplayer.peer_connected.is_connected(_on_peer_connected):
         multiplayer.peer_connected.connect(_on_peer_connected)
@@ -80,6 +80,9 @@ func start_server() -> Error:
     if not multiplayer.peer_disconnected.is_connected(_on_peer_disconnected):
         multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
+    #server set is_game_server on settings for global condition
+    GameSettings.is_game_server  =true
+        
     print("Server initialize finished on port: %s " % SERVER_PORT)
     #for x in range(0, 600):
     #    var _randi : int  = randi_range(0,100)
@@ -104,7 +107,7 @@ func connect_to_server(_url : String) -> Error:
     # Multiplayer API add new peer
     multiplayer.multiplayer_peer = peer
     # disable server mode
-    is_server = false
+    _is_server = false
     # new secure conditon
     if not multiplayer.connected_to_server.is_connected(_on_connected_to_server):
         multiplayer.connected_to_server.connect(_on_connected_to_server)
@@ -119,7 +122,7 @@ func connect_to_server(_url : String) -> Error:
 
 ######## SERVER RUNNING FUNCTIONS GAME_LOOP
 func _physics_process(_delta : float) ->void:
-    if not is_server:
+    if not _is_server:
         return
     
 
@@ -153,7 +156,7 @@ func _on_server_disconnected() ->void:
     connection_changed.emit(false)
 
 func _on_peer_connected(_id : int) ->void:
-    if not is_server:
+    if not _is_server:
         return
 
     food_by_player[_id] = DEFAULT_START_FOOD
@@ -162,7 +165,7 @@ func _on_peer_connected(_id : int) ->void:
     _broadcast_state()
 
 func _on_peer_disconnected(_id : int) ->void:
-    if not is_server:
+    if not _is_server:
         return
     
     food_by_player.erase(_id)
@@ -177,7 +180,7 @@ func _on_peer_disconnected(_id : int) ->void:
 @rpc("any_peer","call_remote","reliable")
 func request_start_fishing(_position : Vector2) ->void:
     #only server execute
-    if not is_server:
+    if not _is_server:
         return
     #stats
     _server_requests +=1
@@ -209,7 +212,10 @@ func request_start_fishing(_position : Vector2) ->void:
     # save stats
     # fish chance  1 of 100 to double
     # fish chance 1 of 10000 unique fish
-    var _fishy_count : int  = randi_range(1,10) +_count_players()
+    # player bonus 33%
+    var _player_bonus : int  = max(int(0.5 * _count_players()),1)
+
+    var _fishy_count : int  = randi_range(1,10) * _player_bonus
     var _fish_type : int  = _get_weighted_fish_type(randi_range(1,FISH_TYPE_SUM))
 
     if randi_range(1,100) >99:
@@ -234,7 +240,7 @@ func request_start_fishing(_position : Vector2) ->void:
 #clients submits its current slider and button state
 @rpc("any_peer","call_remote","unreliable")
 func submit_fishing_input(session_id : int, balance : float, reeling: bool) -> void:
-    if not is_server:
+    if not _is_server:
         return
     var sender_id : int = multiplayer.get_remote_sender_id()
 
@@ -291,7 +297,7 @@ func submit_fishing_input(session_id : int, balance : float, reeling: bool) -> v
 # client send name for last fishing
 @rpc("any_peer","call_remote","reliable")
 func request_last_fishing(_amount: int, _name : String)->void:
-    if not is_server:
+    if not _is_server:
         return
     #stats
     _server_requests +=1
@@ -305,12 +311,12 @@ func on_boss_spawned() ->void:
 
 @rpc("any_peer","call_remote", "reliable")
 func request_boss_damage() ->void:
-    if not is_server:
+    if not _is_server:
         return
     _apply_boss_damage(multiplayer.get_remote_sender_id())
 
 func request_boss_damage_from_server(sender_id: int) -> void:
-    if not is_server:
+    if not _is_server:
         return
     _apply_boss_damage(sender_id)
 
@@ -346,7 +352,7 @@ func _apply_boss_damage(sender_id: int) -> void:
 #client asks to finish the current fishing attempt
 @rpc("any_peer","call_remote","reliable")
 func request_finish_fishing(_fishing_info : Dictionary)->void:
-    if not is_server:
+    if not _is_server:
         return
     #stats
     _server_requests +=1

@@ -35,7 +35,7 @@ func start_swimming(origin: Vector2, radius: float, phase: float, speed: float, 
 		push_error("_fish_type ")
 	#load texture
 	var _new_texture : Texture2D = load(fish_texture_paths[_type])
-	print(_new_texture)
+	#print(_new_texture)
 	#assign
 	texture = _new_texture
 	swim_origin = origin

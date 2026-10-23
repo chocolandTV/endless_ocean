@@ -3,6 +3,8 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if GameSettings.is_game_server:
+		return
 	SoundManager.start_overworld_music()
 
 
