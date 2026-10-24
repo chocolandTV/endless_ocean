@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://dly0o6e4t1pqf"]
+
+[ext_resource type="Script" uid="uid://busuxclm4o2p" path="res://ui/fish_slot.gd" id="1_bk53i"]
+[ext_resource type="Texture2D" uid="uid://c4x14kwx20rap" path="res://assets/textures/fish_types/fish_08.png" id="1_h5uif"]
+
+[node name="Fish_Slot" type="PanelContainer" unique_id=766944031]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_bk53i")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1257824371]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=180551118]
+layout_mode = 2
+
+[node name="Fish_Name" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1956505788]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.4, 0.22352941, 0.19215687, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 17
+text = "Elvis Senior"
+horizontal_alignment = 1
+
+[node name="Header" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=994576730]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Header" unique_id=1808785152]
+custom_minimum_size = Vector2(110, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Fish_Texture" type="TextureRect" parent="MarginContainer/VBoxContainer/Header/VBoxContainer" unique_id=1484466886]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_h5uif")
+stretch_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/Header" unique_id=962221652]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Header/PanelContainer" unique_id=327705552]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Header/PanelContainer/MarginContainer" unique_id=1768028708]
+layout_mode = 2
+
+[node name="Description_and_Value" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Header/PanelContainer/MarginContainer/HBoxContainer" unique_id=2146462737]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label_Catched" type="Label" parent="MarginContainer/VBoxContainer/Header/PanelContainer/MarginContainer/HBoxContainer/Description_and_Value" unique_id=692482498]
+layout_mode = 2
+text = "Catched:"
+
+[node name="Label_Chance" type="Label" parent="MarginContainer/VBoxContainer/Header/PanelContainer/MarginContainer/HBoxContainer/Description_and_Value" unique_id=707633441]
+layout_mode = 2
+text = "Chance:"
+
+[node name="Label_Score" type="Label" parent="MarginContainer/VBoxContainer/Header/PanelContainer/MarginContainer/HBoxContainer/Description_and_Value" unique_id=935652769]
+layout_mode = 2
+text = "Score:"
+
+[node name="Description_and_Value2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Header/PanelContainer/MarginContainer/HBoxContainer" unique_id=1119576806]
+layout_mode = 2
+
+[node name="Catched_Value" type="Label" parent="MarginContainer/VBoxContainer/Header/PanelContainer/MarginContainer/HBoxContainer/Description_and_Value2" unique_id=426958329]
+layout_mode = 2
+text = "1"
+
+[node name="Chance_Value" type="Label" parent="MarginContainer/VBoxContainer/Header/PanelContainer/MarginContainer/HBoxContainer/Description_and_Value2" unique_id=262910840]
+layout_mode = 2
+text = "1%"
+
+[node name="Score_Value" type="Label" parent="MarginContainer/VBoxContainer/Header/PanelContainer/MarginContainer/HBoxContainer/Description_and_Value2" unique_id=1667990082]
+layout_mode = 2
+text = "5"

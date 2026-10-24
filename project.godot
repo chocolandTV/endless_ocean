@@ -35,6 +35,7 @@ window/stretch/aspect="expand"
 [global_group]
 
 sonar_radar=""
+player=""
 
 [input]
 

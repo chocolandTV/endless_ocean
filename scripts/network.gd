@@ -81,7 +81,7 @@ func start_server() -> Error:
         multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
     #server set is_game_server on settings for global condition
-    GameSettings.is_game_server  =true
+    GameSettings.is_game_server  = true
         
     print("Server initialize finished on port: %s " % SERVER_PORT)
     #for x in range(0, 600):
@@ -132,7 +132,7 @@ func _physics_process(_delta : float) ->void:
         decay_timer = 0.0
 
         _decay_food()
-        total_progress -= _count_players()
+        total_progress -= get_player_count()
         if total_progress <= 0:
             total_progress = 0
 
@@ -213,7 +213,7 @@ func request_start_fishing(_position : Vector2) ->void:
     # fish chance  1 of 100 to double
     # fish chance 1 of 10000 unique fish
     # player bonus 33%
-    var _player_bonus : int  = max(int(0.5 * _count_players()),1)
+    var _player_bonus : int  = max(int(0.5 * get_player_count()),1)
 
     var _fishy_count : int  = randi_range(1,10) * _player_bonus
     var _fish_type : int  = _get_weighted_fish_type(randi_range(1,FISH_TYPE_SUM))
@@ -392,7 +392,7 @@ func request_finish_fishing(_fishing_info : Dictionary)->void:
                 reward = randi_range(1,20)
 
             ##group bonus
-            #reward += _count_players()
+            #reward += get_player_count()()
 
             food_by_player[sender_id] += reward
             total_progress += reward
@@ -420,7 +420,7 @@ func _get_target_position(elapsed : float, phase: float) ->float:
     )
     return clampf(50.0 + movement, 10.0, 90.0)
 # get current acive fishers
-func _count_players() ->int:  
+func get_player_count() ->int:  
     return players.size()
 
 
