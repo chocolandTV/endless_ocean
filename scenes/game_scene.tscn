@@ -14,7 +14,6 @@
 
 [node name="Game_Scene" type="Node2D" unique_id=1318297918]
 script = ExtResource("1_vooo2")
-is_server = false
 
 [node name="GameState_Manager" parent="." unique_id=1698828128 node_paths=PackedStringArray("canvas_layer", "sonar_radar") instance=ExtResource("2_mw25s")]
 process_mode = 3
@@ -38,7 +37,6 @@ camera = NodePath("../../Camera2D")
 unique_name_in_owner = true
 
 [node name="Endemic_Spawner" type="MultiplayerSpawner" parent="Endemic_Life_Root" unique_id=1828713776]
-unique_name_in_owner = true
 _spawnable_scenes = PackedStringArray("uid://b7l40xp4i0am6")
 spawn_path = NodePath("..")
 spawn_limit = 50

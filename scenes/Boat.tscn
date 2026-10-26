@@ -224,7 +224,7 @@ properties/8/path = NodePath("Sprite2D/PointLight2D:enabled")
 properties/8/spawn = true
 properties/8/replication_mode = 1
 
-[node name="Boat" type="CharacterBody2D" unique_id=985400639]
+[node name="Boat" type="CharacterBody2D" unique_id=985400639 groups=["player"]]
 collision_layer = 0
 collision_mask = 0
 motion_mode = 1

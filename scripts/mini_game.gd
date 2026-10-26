@@ -110,7 +110,7 @@ func start_minigame(_count : int, _type : int) ->void:
 	# start minigame dropping fishing net
 	fish_mother.spawn_fishcrowd(_count, _type)
 	# random speed
-	var _random_speed : float = randf_range(1,3)
+	var _random_speed : float = randf_range(1.5,4)
 	anim.speed_scale =_random_speed
 	# radom animation
 	var _weight : float = randf_range(1,50)

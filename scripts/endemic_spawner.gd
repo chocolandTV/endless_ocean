@@ -2,6 +2,7 @@ extends MultiplayerSpawner
 
 const BASE_DISTANCE : float  = 1000
 @onready var seagull_scene : PackedScene = load("res://scenes/seagull_01.tscn")
+var _id_endemic_life: int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -21,7 +22,13 @@ func spawn_seagull(_player_pos : Vector2) ->void:
 
 	var _seagull_node : Node2D = seagull_scene.instantiate()
 	# add child to spawner
-	spawn_parent.add_child(_seagull_node)
+	_seagull_node.name  = str("Seagull_" + str(_id_endemic_life))
+
+	#count up
+	_id_endemic_life += 1
+
+	spawn_parent.add_child(_seagull_node,true)
+	
 	# get direction and perfect positions equals the playerpos
 	var _random_direction : Vector2 = Vector2(randf_range(-1,1),randf_range(-1,1))
 

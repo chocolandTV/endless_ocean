@@ -80,8 +80,6 @@ func start_server() -> Error:
     if not multiplayer.peer_disconnected.is_connected(_on_peer_disconnected):
         multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
-    #server set is_game_server on settings for global condition
-    GameSettings.is_game_server  = true
         
     print("Server initialize finished on port: %s " % SERVER_PORT)
     #for x in range(0, 600):

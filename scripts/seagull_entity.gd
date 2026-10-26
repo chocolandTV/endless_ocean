@@ -11,6 +11,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	pass
 func start_seagull(_start_pos : Vector2, _target_pos: Vector2)->void:
+	print("Start Seagull childs")
 	for x in get_children():
 		if x is Seagull_Anim:
 			x.start_seagull(_start_pos, _target_pos)

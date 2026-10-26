@@ -11,7 +11,7 @@ extends Node
 # Plays an AudioStreamPlayer child by its exact node name, e.g. "Click_Sound".
 func play_sfx(sound_name: String) -> void:
     #server dont play sfx
-    if GameSettings.is_game_server:
+    if multiplayer.is_server():
         return
     var sound_player := get_node_or_null(sound_name) as AudioStreamPlayer
     if sound_player == null:
@@ -25,7 +25,7 @@ func play_sfx(sound_name: String) -> void:
 
 func start_menu_music() -> void:
     #server dont play sfx
-    if GameSettings.is_game_server:
+    if multiplayer.is_server():
         return
     if _music_overworld.playing:
         _music_overworld.stop()
@@ -35,7 +35,7 @@ func start_menu_music() -> void:
 
 func start_overworld_music() ->void:
     #server dont play sfx
-    if GameSettings.is_game_server:
+    if multiplayer.is_server():
         return
     if _music_menu.playing:
         _music_menu.stop()
