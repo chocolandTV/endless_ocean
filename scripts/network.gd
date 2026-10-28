@@ -8,6 +8,7 @@ signal fishing_session_started_received(_fishing_sessions : Dictionary)
 signal fishing_session_ended_received(_success : bool, message: String)
 signal boss_finished()
 signal boss_spawned()
+signal fishing_seagull_started(_pos: Vector2)
 # consts
 const SERVER_PORT : int = 9080
 const MAX_PLAYERS: int  = 128
@@ -159,7 +160,7 @@ func _on_peer_connected(_id : int) ->void:
 
     food_by_player[_id] = DEFAULT_START_FOOD
     active_fishers[_id] = false
-    players.append(_id)
+    #players.append(_id)
     _broadcast_state()
 
 func _on_peer_disconnected(_id : int) ->void:
@@ -171,7 +172,7 @@ func _on_peer_disconnected(_id : int) ->void:
     fishing_sessions.erase(_id)
     last_fishing_time.erase(_id)
     last_boss_damage_ms.erase(_id)
-    players.erase(_id)
+   # players.erase(_id)
     _broadcast_state()
 
 #client requests to begin fishing  #CHECK
@@ -322,8 +323,7 @@ func _apply_boss_damage(sender_id: int) -> void:
     print("boss damaged")
     if not _is_boss_spawned:
         return
-    if not players.has(sender_id):
-        return
+
     if current_boss_health <= 0:
         return
 
@@ -410,6 +410,14 @@ func request_finish_fishing(_fishing_info : Dictionary)->void:
         #fishing info incomplete
         print("Network: Fishing_Info incomplete")
         _end_fishing(sender_id,_fishing_info["success"], "Fish escaped!",0)
+    
+    #  Nice seagull effect after fishing
+    var _pos: Vector2  = Vector2.ZERO
+
+    if _fishing_info.has("position"):
+        _pos = _fishing_info["position"]
+    
+    fishing_seagull_started.emit(_pos)
 
 func _get_target_position(elapsed : float, phase: float) ->float:
     # deterministic movement function on client and server

@@ -12,7 +12,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	pass
 
-func spawn_seagull(_player_pos : Vector2) ->void:
+func spawn_seagull(_pos : Vector2) ->void:
 	
 	# only server can spawn players
 	if !multiplayer.is_server():
@@ -20,22 +20,30 @@ func spawn_seagull(_player_pos : Vector2) ->void:
 
 	var spawn_parent: Node = get_node(spawn_path)
 
+	var _name : String = str("Seagull_" + str(_id_endemic_life))
+	if spawn_parent.has_node(_name):
+		return
+	
 	var _seagull_node : Node2D = seagull_scene.instantiate()
 	# add child to spawner
-	_seagull_node.name  = str("Seagull_" + str(_id_endemic_life))
-
 	#count up
 	_id_endemic_life += 1
+	_seagull_node.name = _name
 
-	spawn_parent.add_child(_seagull_node,true)
+	spawn_parent.add_child(_seagull_node)
 	
-	# get direction and perfect positions equals the playerpos
-	var _random_direction : Vector2 = Vector2(randf_range(-1,1),randf_range(-1,1))
+	#print("Spawn Seagull at position: %s" % _pos)
+	_seagull_node.global_position = _pos
+	#add signal
+	_seagull_node.seagull_despawned.connect(_on_seagull_despawn)
 
-	var _start_pos : Vector2 = (_random_direction * BASE_DISTANCE) + _player_pos
+	_seagull_node.start_seagull()
 
-	var _target_pos : Vector2 = (_random_direction * -BASE_DISTANCE) + _player_pos
+func _on_seagull_despawn(_seagull_id : String) ->void:
+	if !multiplayer.is_server():
+		return
 
-	_seagull_node.global_position = _start_pos
-
-	_seagull_node.start_seagull(_start_pos, _target_pos)
+	var spawn_parent: Node = get_node(spawn_path)
+	var _seagull_node: Node = spawn_parent.get_node_or_null(str(_seagull_id))
+	if _seagull_node != null:
+		_seagull_node.queue_free()

@@ -22,6 +22,8 @@ func _enter_tree() -> void:
 	add_to_group("sonar_radar")
 
 func _ready() -> void:
+	if multiplayer.is_server():
+		return
 	if player_node != null:
 		_generate_fish_field()
 
@@ -64,6 +66,8 @@ func set_player_node(player: CharacterBody2D) -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
+	if multiplayer.is_server():
+		return
 	pulse_time += delta
 
 	if player_node == null:

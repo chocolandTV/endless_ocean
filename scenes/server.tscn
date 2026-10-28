@@ -4,6 +4,3 @@
 
 [node name="Server" type="Node2D" unique_id=1837496647]
 script = ExtResource("1_m3u1i")
-
-[node name="Timer" type="Timer" parent="." unique_id=1715005848]
-wait_time = 60.0

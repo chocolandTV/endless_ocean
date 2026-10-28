@@ -20,6 +20,8 @@ var _current_games_done : int  = 0
 var _current_catched_fish : int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if multiplayer.is_server():
+		return
 	Network.game_state_updated.connect(_on_game_state_updated)
 	Network.connection_changed.connect(_on_connection_changed)
 	Network.boss_finished.connect(_on_boss_finished)
@@ -32,6 +34,8 @@ func _on_boss_finished() ->void:
 	_game_done_label.text ="GameDone x %s" %[str(_current_games_done)]
 
 func _physics_process(_delta: float) -> void:
+	if multiplayer.is_server():
+		return
 	time_played_label.text = Game_State_Manager.instance.get_current_playtime()
 	if camera:
 		position_grid_label.text = _format_position_to_sea_coordiates(camera.global_position)

@@ -4,6 +4,17 @@
 [ext_resource type="Texture2D" uid="uid://cbnmrk3dns4nt" path="res://assets/textures/overworld_seagull.png" id="2_ippp1"]
 [ext_resource type="Script" uid="uid://dby21rr0e4uta" path="res://scripts/Seagull_anim.gd" id="3_anim"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_8q1js"]
+properties/0/path = NodePath("Sprite2D:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("Sprite2D:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Sprite2D:scale")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
 [node name="Seagull" type="Node2D" unique_id=1826608790]
 script = ExtResource("1_lg4xx")
 
@@ -11,3 +22,6 @@ script = ExtResource("1_lg4xx")
 modulate = Color(0, 0, 0, 0.12100001)
 texture = ExtResource("2_ippp1")
 script = ExtResource("3_anim")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1069346603]
+replication_config = SubResource("SceneReplicationConfig_8q1js")

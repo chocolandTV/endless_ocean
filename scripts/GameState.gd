@@ -192,7 +192,8 @@ func on_request_finish_fishing(_success : bool, _amount : int)->void:
         var _fishing_info : Dictionary = {
             "session_id" : current_session_id,
             "success" : _success,
-            "fish_count" : _amount
+            "fish_count" : _amount,
+            "position" : player_node.global_position
         }
         Network.request_finish_fishing.rpc_id(1,_fishing_info)
     else:

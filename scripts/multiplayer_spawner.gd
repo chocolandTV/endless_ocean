@@ -30,8 +30,10 @@ func _spawn_player(_id : int) ->void:
 	var _player_node : Node2D = player_network_scene.instantiate()
 
 	_player_node.name = player_name
-
+	#add child to spawner 
 	spawn_parent.add_child(_player_node)
+	#add network player array
+	Network.players.append(_player_node)
 
 func _spawn_boss() -> void:
 	if !multiplayer.is_server():
@@ -56,6 +58,7 @@ func _despawn_player(peer_id: int) -> void:
 	var player_node: Node = spawn_parent.get_node_or_null(str(peer_id))
 	if player_node != null:
 		player_node.queue_free()
+		Network.players.erase(player_node)
 
 func _on_player_spawned(player: Node) -> void:
 	if !player.is_multiplayer_authority():
