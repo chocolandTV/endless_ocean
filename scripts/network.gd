@@ -26,16 +26,16 @@ const GOOD_BALANCE_RANGE : float = 15.0
 const MAX_TENSION : float = 100.0
 # FISH TYPE CHANCE ALIAS METHOD
 const FISH_TYPE_WEIGHT : Array[int] = [
-	75,#75%,#"res://assets/textures/fish_types/fish_00.png",
-	10,#10%,#"res://assets/textures/fish_types/fish_01.png",
-	3,#3%,#"res://assets/textures/fish_types/fish_02.png",
-	3,#3%,#"res://assets/textures/fish_types/fish_03.png",
-	2,#2%,#"res://assets/textures/fish_types/fish_04.png",
-	2,#2%,#"res://assets/textures/fish_types/fish_05.png",
-	2,#2%,#"res://assets/textures/fish_types/fish_06.png",
-	1,#1%,#"res://assets/textures/fish_types/fish_07.png",
-	1,#1%,#"res://assets/textures/fish_types/fish_08.png",
-	1#1%#"res://assets/textures/fish_types/fish_09.png",
+	75,#75%,#"res://assets/textures/fish_types/fish_00.png", Bausa
+	10,#10%,#"res://assets/textures/fish_types/fish_01.png", Oremo
+	3,#3%,#"res://assets/textures/fish_types/fish_02.png", Dorrie
+	3,#3%,#"res://assets/textures/fish_types/fish_03.png", Radioactive Fish
+	2,#2%,#"res://assets/textures/fish_types/fish_04.png", Scarla
+	2,#2%,#"res://assets/textures/fish_types/fish_05.png", Red Lobfish
+	2,#2%,#"res://assets/textures/fish_types/fish_06.png", Scarfase
+	1,#1%,#"res://assets/textures/fish_types/fish_07.png", Deadhearth
+	1,#1%#"res://assets/textures/fish_types/fish_09.png", Tangle
+	1#1%,#"res://assets/textures/fish_types/fish_08.png", Elvfish
 ]
 const FISH_TYPE_SUM : int = 100
 
@@ -389,9 +389,6 @@ func request_finish_fishing(_fishing_info : Dictionary)->void:
             else:
                 reward = randi_range(1,20)
 
-            ##group bonus
-            #reward += get_player_count()()
-
             food_by_player[sender_id] += reward
             total_progress += reward
 
@@ -484,9 +481,6 @@ func _broadcast_state() ->void:
     receive_state.rpc(state)
     #stats
     _server_calls +=1
-    #print("Server: %s Players connected since start, current(%s) Players,  Server_Calls: %s, Server_Requests: %s" % [_server_connects, players.size(), _server_calls,_server_requests])
-    #print("Server Errors: %s Connection errors, %s fishing errors" %[_server_errors, _fishing_errors])
-
 
 func _get_weighted_fish_type(_random_int : int) -> int:
 
@@ -502,4 +496,3 @@ func _get_weighted_fish_type(_random_int : int) -> int:
                return index
     # if all else fails
     return 0
-    

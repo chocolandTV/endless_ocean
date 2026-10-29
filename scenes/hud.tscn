@@ -233,7 +233,7 @@ texture = ExtResource("3_hd3ao")
 [node name="Progress_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_02" unique_id=1289423268]
 custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
-text = "Progress  04192"
+text = "Progress  0,00%"
 
 [node name="Player_Info_03" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=425039990]
 layout_mode = 2
@@ -257,7 +257,7 @@ texture = ExtResource("4_uo2fv")
 [node name="Active_Fisher_Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/Player_Info_04" unique_id=998041370]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = " No Event"
+text = "0"
 
 [node name="Player_Info_07" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=1119597715]
 layout_mode = 2

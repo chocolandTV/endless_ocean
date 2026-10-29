@@ -15,13 +15,14 @@ extends Control
 ##game done
 @onready var _game_done_panel : HBoxContainer =$PanelContainer/MarginContainer/HBoxContainer/Player_Info_08
 @onready var _game_done_label : Label = $PanelContainer/MarginContainer/HBoxContainer/Player_Info_08/game_done
-var _current_games_done : int  = 0
 
+var _current_games_done : int  = 0
+var _start_time : float  = 0
 var _current_catched_fish : int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if multiplayer.is_server():
-		return
+	_start_time = Time.get_ticks_msec()
+
 	Network.game_state_updated.connect(_on_game_state_updated)
 	Network.connection_changed.connect(_on_connection_changed)
 	Network.boss_finished.connect(_on_boss_finished)
@@ -33,12 +34,21 @@ func _on_boss_finished() ->void:
 	_current_games_done +=1
 	_game_done_label.text ="GameDone x %s" %[str(_current_games_done)]
 
+func get_current_playtime(_current_playtime : float) -> String:
+
+    # format current playtime in hh:mm:ss
+	var total_seconds : int = floori(_current_playtime / 1000.0)
+	var hours : int = floori(total_seconds / 3600.0)
+	var minutes : int = floori((total_seconds % 3600) / 60.0)
+	var seconds : int = total_seconds % 60
+	return "%02d:%02d:%02d" % [hours, minutes, seconds]
+
 func _physics_process(_delta: float) -> void:
-	if multiplayer.is_server():
-		return
-	time_played_label.text = Game_State_Manager.instance.get_current_playtime()
+
+	time_played_label.text = get_current_playtime(Time.get_ticks_msec() - _start_time)
 	if camera:
 		position_grid_label.text = _format_position_to_sea_coordiates(camera.global_position)
+
 func _on_connection_changed(_connected :bool)->void:
 	print("connection changed")
 	if _connected:
@@ -50,6 +60,7 @@ func _on_connection_changed(_connected :bool)->void:
 func show_server_offline_panel() ->void:
 	SoundManager.play_sfx("Error_Sound")
 	_server_error_panel.visible = true
+
 func _on_game_state_updated(_state: Dictionary)->void:
 	var food_by_player : Dictionary = _state.get("food", {})
 	var player_id : int = Game_State_Manager.instance.player_id

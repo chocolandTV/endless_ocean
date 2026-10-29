@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cbdget2fo6jva"]
+
+[ext_resource type="Script" uid="uid://5y43843ib16k" path="res://scripts/game_data.gd" id="1_errqn"]
+
+[node name="Game_Data" type="Node" unique_id=1804508276]
+script = ExtResource("1_errqn")
+
+[node name="Timer" type="Timer" parent="." unique_id=1933728850]
+wait_time = 600.0
+autostart = true

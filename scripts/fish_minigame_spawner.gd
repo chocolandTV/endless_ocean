@@ -22,13 +22,13 @@ func spawn_fishcrowd(_count : int, _type : int) ->void:
 	if fish_count == 0:
 		return
 	#select scene and check if not null
-	var fish_scene := fish_scenes
-	if fish_scene == null:
+	var _fish_scene := fish_scenes
+	if _fish_scene == null:
 		push_error("Fish scene is not configured.")
 		return
 	# for loop x to max count
 	for index in fish_count:
-		var fish_node := fish_scene.instantiate()
+		var fish_node := _fish_scene.instantiate()
 		var fish := fish_node as TextureRect
 		if fish == null:
 			fish_node.free()
