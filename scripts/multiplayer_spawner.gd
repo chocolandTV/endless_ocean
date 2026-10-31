@@ -63,6 +63,12 @@ func _despawn_player(peer_id: int) -> void:
 func _on_player_spawned(player: Node) -> void:
 	if !player.is_multiplayer_authority():
 		return
+	
+	print("Player Network Initialized")
+	# SET GAME DATA
+	GameData.set_game_data("player_id",int(player.name))
+	GameData.set_game_data("version", Network.GAME_VERSION)
+	
 	if camera == null:
 		SoundManager.play_sfx("Error_Sound")
 		push_error("MultiplayerSpawner requires a camera for the local player.")

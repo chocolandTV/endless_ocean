@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bt4cunp4g0obe"]
 
 [ext_resource type="PackedScene" uid="uid://dly0o6e4t1pqf" path="res://ui/fish_slot.tscn" id="1_tkcro"]
+[ext_resource type="Script" uid="uid://cg0c3nav5ws02" path="res://ui/fish_dex.gd" id="1_xnkde"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_477m3"]
 
@@ -11,6 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_xnkde")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=719690391]
 layout_mode = 1
@@ -28,18 +30,331 @@ layout_mode = 2
 
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1220245299]
 layout_mode = 2
-theme_override_constants/separation = 28
+theme_override_constants/separation = 30
 theme_override_styles/separator = SubResource("StyleBoxEmpty_477m3")
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1195071549]
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2096746062]
 layout_mode = 2
-theme_override_font_sizes/font_size = 25
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/PanelContainer" unique_id=1195071549]
+layout_mode = 2
+theme_override_font_sizes/font_size = 41
 text = "Game Statistics"
 horizontal_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1854567464]
+[node name="HSeparator3" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1456030853]
 layout_mode = 2
-columns = 6
+theme_override_constants/separation = 42
+theme_override_styles/separator = SubResource("StyleBoxEmpty_477m3")
 
-[node name="Fish_Slot" parent="PanelContainer/MarginContainer/VBoxContainer/GridContainer" unique_id=766944031 instance=ExtResource("1_tkcro")]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=786589453]
 layout_mode = 2
+
+[node name="Boat_Stats_Container" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1386771975]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container" unique_id=1923263540]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer" unique_id=1129718226]
+layout_mode = 2
+
+[node name="Stat_Slot" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=590961887]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot" unique_id=2047189846]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot/HBoxContainer" unique_id=1161198632]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Player Name:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot/HBoxContainer" unique_id=211903565]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot2" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=1757822433]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot2" unique_id=589992974]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot2/HBoxContainer" unique_id=1837746723]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Player ID:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot2/HBoxContainer" unique_id=408104640]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot3" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=706530435]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot3" unique_id=1372829890]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot3/HBoxContainer" unique_id=699924686]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Game Version:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot3/HBoxContainer" unique_id=1586417785]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot4" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=344656555]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot4" unique_id=1059288201]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot4/HBoxContainer" unique_id=196357962]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Total Food:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot4/HBoxContainer" unique_id=1300530713]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot5" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=1925183399]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot5" unique_id=674970365]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot5/HBoxContainer" unique_id=115103311]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Horn used:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot5/HBoxContainer" unique_id=481985257]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot6" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=2062465250]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot6" unique_id=404412573]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot6/HBoxContainer" unique_id=1764368186]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Max Players:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot6/HBoxContainer" unique_id=1712672472]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot7" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=2032301588]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot7" unique_id=673247400]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot7/HBoxContainer" unique_id=2032043193]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Server Disconnects:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot7/HBoxContainer" unique_id=1197380098]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot8" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=1799122467]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot8" unique_id=1355029473]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot8/HBoxContainer" unique_id=1393254103]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Failed Disconnects:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot8/HBoxContainer" unique_id=1158066097]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot9" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=1227852183]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot9" unique_id=1621499964]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot9/HBoxContainer" unique_id=2104979890]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Speedrun Time:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot9/HBoxContainer" unique_id=977558883]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot10" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=1370247981]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot10" unique_id=1920191580]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot10/HBoxContainer" unique_id=1101412399]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Total traveled:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot10/HBoxContainer" unique_id=1982889404]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot11" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=882608289]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot11" unique_id=1348968236]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot11/HBoxContainer" unique_id=989012493]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Total Games Done:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot11/HBoxContainer" unique_id=39641013]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot12" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=1640801405]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot12" unique_id=1840497342]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot12/HBoxContainer" unique_id=325510885]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Total Time:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot12/HBoxContainer" unique_id=362359992]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot13" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=1419256056]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot13" unique_id=78063054]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot13/HBoxContainer" unique_id=84675603]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Total Sessions:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot13/HBoxContainer" unique_id=836977788]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Stat_Slot14" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer" unique_id=216502108]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot14" unique_id=1683121287]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot14/HBoxContainer" unique_id=2003193878]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Total Fish Catched:"
+
+[node name="Value" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Boat_Stats_Container/MarginContainer/VBoxContainer/Stat_Slot14/HBoxContainer" unique_id=173394761]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Fish_Dex_Container" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=218778862]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Fish_Dex_Container" unique_id=1854567464]
+layout_mode = 2
+columns = 4
+
+[node name="Fish_Slot" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Fish_Dex_Container/GridContainer" unique_id=766944031 instance=ExtResource("1_tkcro")]
+layout_mode = 2
+
+[node name="Fish_Slot2" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Fish_Dex_Container/GridContainer" unique_id=608871490 instance=ExtResource("1_tkcro")]
+layout_mode = 2
+
+[node name="Fish_Slot3" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Fish_Dex_Container/GridContainer" unique_id=88498647 instance=ExtResource("1_tkcro")]
+layout_mode = 2
+
+[node name="Fish_Slot4" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Fish_Dex_Container/GridContainer" unique_id=1362269402 instance=ExtResource("1_tkcro")]
+layout_mode = 2
+
+[node name="Fish_Slot5" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Fish_Dex_Container/GridContainer" unique_id=443338223 instance=ExtResource("1_tkcro")]
+layout_mode = 2
+
+[node name="Fish_Slot6" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Fish_Dex_Container/GridContainer" unique_id=160120958 instance=ExtResource("1_tkcro")]
+layout_mode = 2
+
+[node name="Fish_Slot7" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Fish_Dex_Container/GridContainer" unique_id=856263925 instance=ExtResource("1_tkcro")]
+layout_mode = 2
+
+[node name="Fish_Slot8" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Fish_Dex_Container/GridContainer" unique_id=1160537941 instance=ExtResource("1_tkcro")]
+layout_mode = 2
+
+[node name="Fish_Slot9" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Fish_Dex_Container/GridContainer" unique_id=1337600049 instance=ExtResource("1_tkcro")]
+layout_mode = 2
+
+[node name="Fish_Slot10" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Fish_Dex_Container/GridContainer" unique_id=1848250765 instance=ExtResource("1_tkcro")]
+layout_mode = 2
+
+[node name="Fish_Slot11" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Fish_Dex_Container/GridContainer" unique_id=1032971908 instance=ExtResource("1_tkcro")]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=714456304]
+layout_mode = 2
+theme_override_constants/separation = 7
+theme_override_styles/separator = SubResource("StyleBoxEmpty_477m3")

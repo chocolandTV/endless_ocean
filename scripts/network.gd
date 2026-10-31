@@ -10,6 +10,7 @@ signal boss_finished()
 signal boss_spawned()
 signal fishing_seagull_started(_pos: Vector2)
 # consts
+const GAME_VERSION : float = 1.1
 const SERVER_PORT : int = 9080
 const MAX_PLAYERS: int  = 128
 const DEFAULT_START_FOOD : int  = 100

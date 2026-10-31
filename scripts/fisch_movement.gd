@@ -1,21 +1,6 @@
 extends TextureRect
 
-const fish_texture_paths : Array[String] = [
-	
-	"res://assets/textures/fish_types/fish_00.png",
-	"res://assets/textures/fish_types/fish_01.png",
-	"res://assets/textures/fish_types/fish_02.png",
-	"res://assets/textures/fish_types/fish_03.png",
-	"res://assets/textures/fish_types/fish_04.png",
-	"res://assets/textures/fish_types/fish_05.png",
-	"res://assets/textures/fish_types/fish_06.png",
-	"res://assets/textures/fish_types/fish_07.png",
-	"res://assets/textures/fish_types/fish_08.png",
-	"res://assets/textures/fish_types/fish_09.png",
-	"res://assets/textures/fish_types/fish_10.png"
 
-	
-]
 const SWIM_ROTATION : float = 0.08
 const SWIM_SCALE : float = 0.025
 
@@ -31,10 +16,10 @@ func start_swimming(origin: Vector2, radius: float, phase: float, speed: float, 
 	if _type == null:
 		push_error("_fish_type has error set to default")
 		_type = 0
-	if _type < 0 or _type > fish_texture_paths.size():
+	if _type < 0 or _type > GameData.FISH_TEXTURE_PATHS.size():
 		push_error("_fish_type ")
 	#load texture
-	var _new_texture : Texture2D = load(fish_texture_paths[_type])
+	var _new_texture : Texture2D = load(GameData.FISH_TEXTURE_PATHS[_type])
 	#print(_new_texture)
 	#assign
 	texture = _new_texture
