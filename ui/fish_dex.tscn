@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://bt4cunp4g0obe"]
 
+[ext_resource type="PackedScene" uid="uid://dly0o6e4t1pqf" path="res://ui/fish_slot.tscn" id="1_tkcro"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_477m3"]
 
 [node name="Fish_Dex" type="Control" unique_id=672391781]
@@ -32,9 +34,12 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_477m3")
 [node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1195071549]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
-text = "Fishdex"
+text = "Game Statistics"
 horizontal_alignment = 1
 
 [node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1854567464]
 layout_mode = 2
 columns = 6
+
+[node name="Fish_Slot" parent="PanelContainer/MarginContainer/VBoxContainer/GridContainer" unique_id=766944031 instance=ExtResource("1_tkcro")]
+layout_mode = 2

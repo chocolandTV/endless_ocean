@@ -67,7 +67,7 @@ text = "Chance:"
 
 [node name="Label_Score" type="Label" parent="MarginContainer/VBoxContainer/Header/PanelContainer/MarginContainer/HBoxContainer/Description_and_Value" unique_id=935652769]
 layout_mode = 2
-text = "Score:"
+text = "Crowd:"
 
 [node name="Description_and_Value2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Header/PanelContainer/MarginContainer/HBoxContainer" unique_id=1119576806]
 layout_mode = 2

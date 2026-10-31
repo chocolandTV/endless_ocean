@@ -3,13 +3,14 @@ class_name Game_State_Manager
 ## THIS SCRIPT HANDLES GAMESTATE AND ALL NETWORK REQUEST AND RECEIVES
 # signals
 signal minigame_finished(_result : bool, fish_count : int, time : float)
-
+signal stats_enabled(_value : bool)
 enum GAME_STATE {
     MENU = 0,
     OVERWORLD = 1,
     FISHING = 2,
     BOSS = 3,
-    PAUSED = 4
+    PAUSED = 4,
+    STATS = 5
 }
 @export var canvas_layer : CanvasLayer
 @export var minigame_scene : PackedScene
@@ -33,6 +34,7 @@ var _fishing_session : Dictionary  ={}
 var _is_paused : bool = false
 var _pending_fish_position : Vector2 = Vector2.ZERO
 var _has_pending_fish : bool = false
+var _is_statistic_enabled : bool = false
 #stats
 var stat_total_fish_catched : int = 0
 var stat_total_fish_escaped : int = 0
@@ -57,12 +59,35 @@ func _ready() -> void:
     Network.game_state_updated.connect(_on_network_state_updated)
 # input if fishing in overworld is pressed
 func _physics_process(_delta: float) -> void:
-    # handle fishing
-    if Input.is_action_just_pressed("fishing"):
-        on_fishing_button_pressed_in_overworld()
     #handle pause
     if Input.is_action_just_pressed("pause"):
         _pause_game()
+
+    if current_game_state == GAME_STATE.PAUSED:
+        return
+
+    #handle statistic
+    if Input.is_action_just_pressed("statistics"):
+        _is_statistic_enabled = !_is_statistic_enabled
+        _enable_statistic_menu(_is_statistic_enabled)
+
+    # handle fishing
+    if current_game_state == GAME_STATE.STATS:
+        return
+    if Input.is_action_just_pressed("fishing"):
+        on_fishing_button_pressed()
+    
+func _enable_statistic_menu(_value: bool) ->void:
+    if current_game_state == GAME_STATE.STATS:
+            set_game_state(GAME_STATE.OVERWORLD)
+        #emit signal to ui
+            stats_enabled.emit(_value)
+    # works only in OVERWORLD
+    elif current_game_state == GAME_STATE.OVERWORLD:
+        if _value:
+            set_game_state(GAME_STATE.STATS)
+            stats_enabled.emit(_value)
+
 func _pause_game() ->void:
     _is_paused = !_is_paused
     if _is_paused:
@@ -94,6 +119,7 @@ func _set_boss_game_state() -> void:
     else:
         last_game_state = current_game_state
         current_game_state = GAME_STATE.BOSS
+
 func set_last_game_state() ->void:
     if last_game_state == current_game_state:
         print("error same gamestate")
@@ -103,6 +129,7 @@ func set_last_game_state() ->void:
     current_game_state = last_game_state
     last_game_state = _temp
     print("set last game_state")
+
 func set_game_state(_gamestate : GAME_STATE)->void:
     if current_game_state == _gamestate:
         return
@@ -130,7 +157,7 @@ func set_player(_node : Node2D)->void:
 
 #### NETWORK
 #if fishing button is pressed in overworld ->request fishing to start
-func on_fishing_button_pressed_in_overworld() -> void:
+func on_fishing_button_pressed() -> void:
     ############### OVERWORLD STATE
     if current_game_state == GAME_STATE.OVERWORLD:
         if sonar_radar == null:
@@ -181,7 +208,8 @@ func on_request_start_fishing()->void:
 
     _pending_fish_position = fishing_position
     _has_pending_fish = true
-    Network.request_start_fishing.rpc_id(1, fishing_position)
+    if current_game_state == GAME_STATE.OVERWORLD:
+        Network.request_start_fishing.rpc_id(1, fishing_position)
 
 
 #if fishing is finished request to get result

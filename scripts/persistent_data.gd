@@ -53,8 +53,10 @@ func load_game() ->void:
     if _loaded_file:
         var _new_data = _loaded_file.get_var()
     #close fileaccess
-    _loaded_file.close()
-    print("Persistent_Data: Game loaded.")
+        _loaded_file.close()
+        print("Persistent_Data: Game loaded.")
+    else:
+        print("There is no Data to Load.")
 
 func reset_game_data() ->void:
     # save game with default settings

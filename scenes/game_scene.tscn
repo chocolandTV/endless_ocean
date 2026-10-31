@@ -11,11 +11,11 @@
 [ext_resource type="PackedScene" uid="uid://dvkb5hh7x72vy" path="res://scenes/hud.tscn" id="5_tcjrq"]
 [ext_resource type="Script" uid="uid://dsuyarut6afql" path="res://scripts/endemic_spawner.gd" id="7_tcjrq"]
 [ext_resource type="PackedScene" uid="uid://njxyv0hg7jr3" path="res://scenes/camera_2d.tscn" id="10_mw25s"]
+[ext_resource type="PackedScene" uid="uid://bt4cunp4g0obe" path="res://ui/fish_dex.tscn" id="12_rvs2r"]
 
 [node name="Game_Scene" type="Node2D" unique_id=1318297918]
 script = ExtResource("1_vooo2")
 is_server = false
-testing_local = false
 
 [node name="GameState_Manager" parent="." unique_id=1698828128 node_paths=PackedStringArray("canvas_layer", "sonar_radar") instance=ExtResource("2_mw25s")]
 process_mode = 3
@@ -46,8 +46,11 @@ script = ExtResource("7_tcjrq")
 
 [node name="Camera2D" parent="." unique_id=100985078 instance=ExtResource("10_mw25s")]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=608729439]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=608729439 node_paths=PackedStringArray("statistic_menu", "hud_menu", "sonar_menu")]
 script = ExtResource("3_dgsfn")
+statistic_menu = NodePath("Fish_Dex")
+hud_menu = NodePath("HUD")
+sonar_menu = NodePath("Sonar_Radar")
 
 [node name="HUD" parent="CanvasLayer" unique_id=2053066265 node_paths=PackedStringArray("camera") instance=ExtResource("5_tcjrq")]
 mouse_filter = 1
@@ -65,3 +68,6 @@ offset_bottom = 0.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 1
+
+[node name="Fish_Dex" parent="CanvasLayer" unique_id=672391781 instance=ExtResource("12_rvs2r")]
+visible = false
