@@ -6,8 +6,9 @@ signal game_state_updated(state: Dictionary)
 signal fishing_result_received(success : bool,message : String, reward : int)
 signal fishing_session_started_received(_fishing_sessions : Dictionary)
 signal fishing_session_ended_received(_success : bool, message: String)
-signal boss_finished()
+signal boss_finished(_time : float)
 signal boss_spawned()
+
 signal fishing_seagull_started(_pos: Vector2)
 # consts
 const GAME_VERSION : float = 1.1
@@ -63,6 +64,7 @@ var _server_calls : int  = 0
 var _server_connects : int  = 0
 var _server_errors : int =  0
 var _fishing_errors : int  = 0
+var _server_boss_time : float = 0
 ######################### SERVER START FUNCTION 
 func start_server() -> Error:
     var peer := WebSocketMultiplayerPeer.new()
@@ -127,7 +129,7 @@ func _physics_process(_delta : float) ->void:
     
 
     decay_timer +=_delta
-
+    _server_boss_time += _delta
     if decay_timer >= FOOD_DECAY_TIME:
         decay_timer = 0.0
 
@@ -343,8 +345,8 @@ func _apply_boss_damage(sender_id: int) -> void:
         print("Boss finished Congratulation")
         _is_boss_spawned = false
         total_progress = 0
-        receive_boss_finished.rpc()
-
+        receive_boss_finished.rpc(_server_boss_time)
+        _server_boss_time = 0
         _server_calls +=1
     _broadcast_state()
 
@@ -462,8 +464,8 @@ func receive_state(state : Dictionary) ->void:
     game_state_updated.emit(state)
     
 @rpc("authority","call_local","reliable")
-func receive_boss_finished() ->void:
-    boss_finished.emit()
+func receive_boss_finished(_time : float) ->void:
+    boss_finished.emit(_time)
 #### BASE DECAY FOOD FUNCTION OVER TIME
 func _decay_food() ->void:
     for player_id in food_by_player.keys():

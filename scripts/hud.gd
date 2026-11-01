@@ -29,10 +29,16 @@ func _ready() -> void:
 	Game_State_Manager.instance.minigame_finished.connect(_on_minigame_finished)
 
 
-func _on_boss_finished() ->void:
+func _on_boss_finished(_time : float) ->void:
 	_game_done_panel.visible = true
 	_current_games_done +=1
 	_game_done_label.text ="GameDone x %s" %[str(_current_games_done)]
+	# gdq check 
+	if _time < GameData.get_game_data_float("GDQ") or GameData.get_game_data_float("GDQ") == 0.0:
+		GameData.set_game_data("GDQ", _time)
+	# after boss game done
+	GameData.add_game_data("total_games_done",1)
+
 
 func get_current_playtime(_current_playtime : float) -> String:
 

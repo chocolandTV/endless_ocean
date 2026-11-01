@@ -6,7 +6,7 @@ class_name Giant_Fish
 func _ready() -> void:
     Network.boss_finished.connect(_on_boss_finished)
 
-func _on_boss_finished() ->void:
+func _on_boss_finished(_time : float) ->void:
     print("boss finished, start baby spawn")
     if particle_scene != null:
         var particle_effect := particle_scene.instantiate() as Node2D

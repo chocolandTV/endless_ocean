@@ -43,7 +43,7 @@ func _on_stats_enabled(_bool : bool) ->void:
 func _reload_fish_dex() ->void:
 	_load_fish_dex()
 
-func get_current_playtime(_current_playtime : float) -> String:
+func get_time_formated(_current_playtime : float) -> String:
     # format current playtime in hh:mm:ss
 	var total_seconds : int = floori(_current_playtime / 1000.0)
 	var hours : int = floori(total_seconds / 3600.0)
@@ -60,9 +60,9 @@ func _load_fish_dex() ->void:
 	server_disconnects_label.text= GameData.get_game_data_string("server_disconnects")
 	failed_disconnects_label.text = GameData.get_game_data_string("failed_disconnects")
 
-	speedrun_time_label.text = get_current_playtime(GameData.get_game_data_float("GDQ"))
+	speedrun_time_label.text = get_time_formated(GameData.get_game_data_float("GDQ"))
 	total_traveled_label.text = GameData.get_game_data_string("total_travel")
-	total_time_label.text = get_current_playtime(GameData.get_game_data_float("total_time"))
+	total_time_label.text = get_time_formated(GameData.get_game_data_float("total_time"))
 	total_session_label.text = GameData.get_game_data_string("total_server_sessions")
 
 	total_fish_catched_label.text = GameData.get_game_data_string("total_fish")

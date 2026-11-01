@@ -35,6 +35,7 @@ var _is_paused : bool = false
 var _pending_fish_position : Vector2 = Vector2.ZERO
 var _has_pending_fish : bool = false
 var _is_statistic_enabled : bool = false
+var _current_fish_type : int = 0
 #stats
 var stat_total_fish_catched : int = 0
 var stat_total_fish_escaped : int = 0
@@ -100,7 +101,7 @@ func _pause_game() ->void:
         set_last_game_state()
         get_tree().paused = false
 
-func _on_boss_finished() ->void:
+func _on_boss_finished(_time : float) ->void:
     print("Boss finished Hurray")
     set_game_state(GAME_STATE.OVERWORLD)
 
@@ -246,6 +247,8 @@ func _on_fishing_session_started(fishing_session : Dictionary)->void:
         _minigame_ui = _instance
         #disable player controls
         player_controls_enabled = false
+        #store current fish type
+        _current_fish_type = fishing_session.get("fish_type",0)
         #start mingame
         _instance.start_minigame(fishing_session.get("fish_count", 1),fishing_session.get("fish_type",0))
 
@@ -276,10 +279,13 @@ func _on_fishing_result_received(_success : bool, _message : String, _reward : i
         #Save last success fisher
         SoundManager.play_sfx("Fish_Capured")
         #Network.request_last_fishing(_reward, player_node.name)
+        GameData.add_fish(_current_fish_type,_reward)
 
     else:
+
         print("Fishing_UI: The fish escaped.")
         minigame_finished.emit(false, _reward, Time.get_ticks_msec())
         SoundManager.play_sfx("Fish_Escaped")
+        GameData.add_game_data("total_fish_missed",1)
     #stop minigame client side
     _on_fishing_session_ended(_success, _message)

@@ -7,7 +7,9 @@ const SPEED : float = 200.0
 const ACCELERATION_TIME : float = 2.0
 const ACCELERATION : float = SPEED / ACCELERATION_TIME
 const ROTATION_SPEED : float = 1.5
+
 # set player node id to given multiplayer connector
+#### IMPORTANT THIS set authority to player status, but in ready or function you have to if !is_multiplayer_authority():return
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 
@@ -27,6 +29,8 @@ func _ready() -> void:
 		push_error("SonarRadar node must implement set_player_node().")
 		return
 	sonar_radar.call("set_player_node", self)
+	# add server session after connection to server and initialized successfully
+	GameData.add_game_data("total_server_sessions",1)
 
 func _physics_process(delta: float) -> void:
 	# only move the correct characterbody2d with your multiplayer id
@@ -48,4 +52,6 @@ func _physics_process(delta: float) -> void:
 	
 	velocity = velocity.move_toward(forward * SPEED * -engine_power, ACCELERATION * delta)
 	
+	#tracking movement
+	GameData.current_game_data["total_travel"] += velocity.length()
 	move_and_slide()
